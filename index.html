@@ -448,12 +448,8 @@
             background: #fffbeb;
         }
 
-        .crypto-card.highlighted .crypto-badge {
-            display: inline-block;
-        }
-
         .crypto-badge {
-            display: none;
+            display: inline-block;
             font-size: 10px;
             background: #f59e0b;
             color: #fff;
@@ -1023,10 +1019,10 @@
                     `;
                 }
 
-                const isHighlighted = highlightedCoins.has(coinId);
+                const isDefault = DEFAULT_COINS.includes(coinId);
+                const isHighlighted = highlightedCoins.has(coinId) || isDefault;
                 const changeClass = coin.change24h >= 0 ? 'positive' : 'negative';
                 const changeSign = coin.change24h >= 0 ? '+' : '';
-                const isDefault = DEFAULT_COINS.includes(coinId);
 
                 return `
                     <div class="crypto-card ${isHighlighted ? 'highlighted' : ''}" onclick="window.open('https://www.coingecko.com/en/coins/${coinId}', '_blank')">
@@ -1036,7 +1032,7 @@
                                 <div>
                                     <div class="crypto-name">
                                         ${coin.name}
-                                        <span class="crypto-badge">Mentioned</span>
+                                        ${highlightedCoins.has(coinId) ? '<span class="crypto-badge">Mentioned</span>' : ''}
                                     </div>
                                     <div class="crypto-symbol">${coin.symbol}</div>
                                 </div>
