@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today X!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #37352f;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 16px 12px;
+            border-bottom: 1px solid #e5e5e5;
+            background: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #37352f;
+            letter-spacing: -0.5px;
+        }
+
+        .last-updated {
+            font-size: 11px;
+            color: #9b9a97;
+            margin-top: 4px;
+        }
+
+        .source-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 10px;
+            border-radius: 10px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .source-badge.live {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .source-badge.mock {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        /* Main Layout */
+        .container {
+            display: flex;
+            height: calc(100vh - 70px);
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            border-right: 1px solid #e5e5e5;
+            padding: 16px 12px;
+            overflow-y: auto;
+            background: #fbfbfa;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9b9a97;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+        }
+
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #37352f;
+            color: #fff;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .account-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            text-decoration: none;
+            color: inherit;
+            margin-bottom: 2px;
+        }
+
+        .account-item:hover {
+            background: #efefef;
+        }
+
+        .account-item.active {
+            background: #e8e8e8;
+        }
+
+        .account-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #37352f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .account-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .account-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #37352f;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-handle {
+            font-size: 12px;
+            color: #9b9a97;
+        }
+
+        .account-bio {
+            font-size: 11px;
+            color: #9b9a97;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+
+        /* Right Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 48px;
+            background: #ffffff;
+        }
+
+        .content-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .content-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #37352f;
+        }
+
+        .refresh-btn {
+            padding: 6px 12px;
+            font-size: 13px;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            background: #ffffff;
+            color: #37352f;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #f7f6f3;
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Tweet Cards */
+        .tweet-card {
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .tweet-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .tweet-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #37352f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .tweet-author {
+            flex: 1;
+        }
+
+        .tweet-author-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #37352f;
+        }
+
+        .tweet-author-handle {
+            font-size: 12px;
+            color: #9b9a97;
+        }
+
+        .tweet-time {
+            font-size: 12px;
+            color: #9b9a97;
+        }
+
+        .tweet-content {
+            font-size: 14px;
+            color: #37352f;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .tweet-content a {
+            color: #2383e2;
+            text-decoration: none;
+        }
+
+        .tweet-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tweet footer with actions */
+        .tweet-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .tweet-link {
+            font-size: 12px;
+            color: #9b9a97;
+            text-decoration: none;
+        }
+
+        .tweet-link:hover {
+            color: #37352f;
+        }
+
+        .translate-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            font-size: 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            background: #ffffff;
+            color: #9b9a97;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .translate-btn:hover {
+            border-color: #37352f;
+            color: #37352f;
+        }
+
+        .translate-btn.translated {
+            background: #e8f5e9;
+            border-color: #a5d6a7;
+            color: #2e7d32;
+        }
+
+        .translate-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .tweet-translation {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #f7f6f3;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #37352f;
+            border-left: 3px solid #37352f;
+        }
+
+        .translation-loading {
+            color: #9b9a97;
+            font-style: italic;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #9b9a97;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 24px;
+            color: #9b9a97;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e5e5;
+            border-top-color: #37352f;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d3d3d3;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #bbb;
+        }
+
+        /* Filter Pills */
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-pill {
+            padding: 4px 12px;
+            font-size: 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 16px;
+            background: #ffffff;
+            color: #9b9a97;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-pill:hover {
+            border-color: #37352f;
+            color: #37352f;
+        }
+
+        .filter-pill.active {
+            background: #37352f;
+            border-color: #37352f;
+            color: #ffffff;
+        }
+
+        /* Status indicator */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .status-dot.online {
+            background: #00c853;
+        }
+
+        .status-dot.offline {
+            background: #9b9a97;
+        }
+
+        /* Error message */
+        .error-message {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #e65100;
+        }
+
+        /* Countdown timer */
+        .countdown {
+            font-size: 11px;
+            color: #9b9a97;
+            margin-left: 4px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .last-updated {
+                font-size: 10px;
+            }
+
+            .countdown {
+                display: none;
+            }
+
+            .container {
+                flex-direction: column;
+                height: auto;
+                min-height: calc(100vh - 60px);
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                width: 280px;
+                height: 100vh;
+                z-index: 150;
+                transition: left 0.3s ease;
+                padding-top: 70px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 140;
+            }
+
+            .sidebar-overlay.open {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .content {
+                padding: 16px;
+                width: 100%;
+            }
+
+            .content-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .filter-pills {
+                display: none;
+            }
+
+            .tweet-card {
+                padding: 12px 0;
+            }
+
+            .tweet-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .tweet-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 10px;
+            }
+
+            .account-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .content {
+                padding: 12px;
+            }
+
+            .tweet-content {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Today X!</h1>
+        <div class="last-updated">
+            <span class="status-dot" id="statusDot"></span>
+            Last updated: <span id="lastUpdated">--</span>
+            <span class="countdown" id="countdown"></span>
+            <span class="source-badge" id="sourceBadge">--</span>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-title">Top 10 Crypto Accounts</div>
+            <div id="accountList"></div>
+        </aside>
+
+        <main class="content">
+            <div class="content-header">
+                <div class="content-title" id="contentTitle">All Tweets</div>
+                <button class="refresh-btn" id="refreshBtn" onclick="refreshTweets()">
+                    Refresh
+                </button>
+            </div>
+            <div class="filter-pills" id="filterPills">
+                <span class="filter-pill active" data-filter="all">All</span>
+            </div>
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="tweetList">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p style="margin-top: 8px;">Loading tweets...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+        <span id="menuIcon">☰</span>
+    </button>
+
+    <script>
+        // Configuration
+        const API_BASE = window.location.origin;
+        const REFRESH_INTERVAL = 30 * 60 * 1000; // 30 minutes
+
+        // Top 10 Crypto Accounts Data
+        const accounts = [
+            { id: 'VitalikButerin', name: 'Vitalik Buterin', handle: '@VitalikButerin', bio: 'Ethereum co-founder', avatar: 'VB', url: 'https://x.com/VitalikButerin' },
+            { id: 'CryptoHayes', name: 'Arthur Hayes', handle: '@CryptoHayes', bio: 'BitMEX co-founder', avatar: 'AH', url: 'https://x.com/CryptoHayes' },
+            { id: 'justinsuntron', name: 'Justin Sun', handle: '@justinsuntron', bio: 'TRON founder', avatar: 'JS', url: 'https://x.com/justinsuntron' },
+            { id: 'jack', name: 'Jack Dorsey', handle: '@jack', bio: 'Block CEO, Bitcoin advocate', avatar: 'JD', url: 'https://x.com/jack' },
+            { id: 'aantonop', name: 'Andreas Antonopoulos', handle: '@aantonop', bio: 'Bitcoin educator', avatar: 'AA', url: 'https://x.com/aantonop' },
+            { id: 'MMCrypto', name: 'MMCrypto', handle: '@MMCrypto', bio: 'Crypto trader', avatar: 'MM', url: 'https://x.com/MMCrypto' },
+            { id: 'cabornetwho', name: 'CZ Binance', handle: '@cabornetwho', bio: 'Former Binance CEO', avatar: 'CZ', url: 'https://x.com/cabornetwho' },
+            { id: 'MessariCrypto', name: 'Messari', handle: '@MessariCrypto', bio: 'Crypto research', avatar: 'M', url: 'https://x.com/MessariCrypto' },
+            { id: 'TheBlock__', name: 'The Block', handle: '@TheBlock__', bio: 'Crypto news', avatar: 'TB', url: 'https://x.com/TheBlock__' },
+            { id: 'WatcherGuru', name: 'Watcher.Guru', handle: '@WatcherGuru', bio: 'Breaking crypto news', avatar: 'WG', url: 'https://x.com/WatcherGuru' }
+        ];
+
+        let currentFilter = 'all';
+        let tweets = [];
+        let dataSource = 'mock';
+        let lastRefreshTime = null;
+        let countdownInterval = null;
+        let translationCache = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAccounts();
+            refreshTweets();
+
+            // Auto-refresh every 30 minutes
+            setInterval(() => {
+                refreshTweets();
+            }, REFRESH_INTERVAL);
+
+            // Update countdown every second
+            countdownInterval = setInterval(updateCountdown, 1000);
+        });
+
+        // Toggle sidebar for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const icon = document.getElementById('menuIcon');
+
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+            icon.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+        }
+
+        // Fetch tweets from API
+        async function fetchTweets() {
+            try {
+                const response = await fetch(`${API_BASE}/api/tweets`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('API fetch failed:', error);
+                return null;
+            }
+        }
+
+        // Translate text using Google Translate API (free endpoint)
+        async function translateText(text, tweetId) {
+            if (translationCache[tweetId]) {
+                return translationCache[tweetId];
+            }
+
+            try {
+                // Using Google Translate free endpoint
+                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q=${encodeURIComponent(text)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Extract translated text from response
+                let translated = '';
+                if (data && data[0]) {
+                    data[0].forEach(item => {
+                        if (item[0]) translated += item[0];
+                    });
+                }
+
+                translationCache[tweetId] = translated;
+                return translated;
+            } catch (error) {
+                console.error('Translation failed:', error);
+                return '翻译失败，请稍后重试';
+            }
+        }
+
+        // Handle translate button click
+        async function handleTranslate(tweetId, originalText) {
+            const btn = document.querySelector(`[data-tweet-id="${tweetId}"] .translate-btn`);
+            const translationDiv = document.getElementById(`translation-${tweetId}`);
+
+            // If already translated, toggle visibility
+            if (translationDiv.innerHTML && !translationDiv.classList.contains('translation-loading')) {
+                if (translationDiv.style.display === 'none') {
+                    translationDiv.style.display = 'block';
+                    btn.classList.add('translated');
+                } else {
+                    translationDiv.style.display = 'none';
+                    btn.classList.remove('translated');
+                }
+                return;
+            }
+
+            // Show loading state
+            translationDiv.innerHTML = '<span class="translation-loading">翻译中...</span>';
+            translationDiv.style.display = 'block';
+            btn.disabled = true;
+
+            // Get translation
+            const translated = await translateText(originalText, tweetId);
+
+            translationDiv.innerHTML = translated;
+            translationDiv.classList.remove('translation-loading');
+            btn.disabled = false;
+            btn.classList.add('translated');
+        }
+
+        // Render account list
+        function renderAccounts() {
+            const container = document.getElementById('accountList');
+            container.innerHTML = accounts.map(account => `
+                <a href="${account.url}" target="_blank" rel="noopener noreferrer"
+                   class="account-item" data-id="${account.id}"
+                   onclick="event.preventDefault(); filterByAccount('${account.id}'); toggleSidebar();">
+                    <div class="account-avatar">${account.avatar}</div>
+                    <div class="account-info">
+                        <div class="account-name">${account.name}</div>
+                        <div class="account-handle">${account.handle}</div>
+                        <div class="account-bio">${account.bio}</div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // Render tweets
+        function renderTweets() {
+            const container = document.getElementById('tweetList');
+            let filteredTweets = currentFilter === 'all'
+                ? tweets
+                : tweets.filter(t => t.accountId === currentFilter);
+
+            // Sort by time descending
+            filteredTweets.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+            if (filteredTweets.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>No tweets to display</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredTweets.map((tweet, index) => {
+                const account = accounts.find(a => a.id === tweet.accountId) || {
+                    name: tweet.accountName || tweet.accountId,
+                    handle: tweet.accountHandle || `@${tweet.accountId}`,
+                    avatar: (tweet.accountId || 'X').substring(0, 2).toUpperCase()
+                };
+
+                const content = tweet.content.length > 500
+                    ? tweet.content.substring(0, 500) + '...'
+                    : tweet.content;
+
+                const tweetId = tweet.id || index;
+                const rawContent = content.replace(/<[^>]*>/g, '');
+
+                return `
+                    <div class="tweet-card" data-tweet-id="${tweetId}">
+                        <div class="tweet-header" onclick="window.open('${tweet.url}', '_blank')">
+                            <div class="tweet-avatar">${account.avatar}</div>
+                            <div class="tweet-author">
+                                <div class="tweet-author-name">${account.name}</div>
+                                <div class="tweet-author-handle">${account.handle}</div>
+                            </div>
+                            <div class="tweet-time">${formatTime(tweet.time)}</div>
+                        </div>
+                        <div class="tweet-content">${formatContent(content)}</div>
+                        <div class="tweet-translation" id="translation-${tweetId}" style="display: none;"></div>
+                        <div class="tweet-footer">
+                            <a href="${tweet.url}" target="_blank" class="tweet-link">
+                                View on X →
+                            </a>
+                            <button class="translate-btn" onclick="handleTranslate('${tweetId}', \`${rawContent.replace(/`/g, "'").replace(/\\/g, '\\\\')}\`)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                                </svg>
+                                译
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter by account
+        function filterByAccount(accountId) {
+            currentFilter = accountId;
+            document.querySelectorAll('.account-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.id === accountId);
+            });
+            document.querySelectorAll('.filter-pill').forEach(pill => {
+                pill.classList.toggle('active', pill.dataset.filter === accountId);
+            });
+            const account = accounts.find(a => a.id === accountId);
+            document.getElementById('contentTitle').textContent = account ? `${account.name}'s Tweets` : 'All Tweets';
+            renderTweets();
+        }
+
+        // Filter all
+        function filterAll() {
+            currentFilter = 'all';
+            document.querySelectorAll('.account-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.filter-pill').forEach(pill => {
+                pill.classList.toggle('active', pill.dataset.filter === 'all');
+            });
+            document.getElementById('contentTitle').textContent = 'All Tweets';
+            renderTweets();
+        }
+
+        // Refresh tweets
+        async function refreshTweets() {
+            const btn = document.getElementById('refreshBtn');
+            const errorDiv = document.getElementById('errorMessage');
+            btn.disabled = true;
+            btn.textContent = 'Refreshing...';
+            errorDiv.style.display = 'none';
+
+            const data = await fetchTweets();
+
+            if (data && data.success) {
+                tweets = data.tweets || [];
+                dataSource = data.source || 'unknown';
+
+                if (data.message) {
+                    errorDiv.textContent = data.message;
+                    errorDiv.style.display = 'block';
+                }
+            } else {
+                // Fallback to mock data
+                tweets = getMockTweets();
+                dataSource = 'mock';
+                errorDiv.textContent = 'Could not connect to server. Showing demo data.';
+                errorDiv.style.display = 'block';
+            }
+
+            renderTweets();
+            updateStatus();
+            lastRefreshTime = new Date();
+            updateLastUpdated();
+
+            btn.disabled = false;
+            btn.textContent = 'Refresh';
+        }
+
+        // Update status indicators
+        function updateStatus() {
+            const statusDot = document.getElementById('statusDot');
+            const sourceBadge = document.getElementById('sourceBadge');
+
+            if (dataSource === 'xrss' || dataSource === 'rsshub') {
+                statusDot.className = 'status-dot online';
+                sourceBadge.className = 'source-badge live';
+                sourceBadge.textContent = 'LIVE';
+            } else {
+                statusDot.className = 'status-dot offline';
+                sourceBadge.className = 'source-badge mock';
+                sourceBadge.textContent = 'DEMO';
+            }
+        }
+
+        // Update countdown timer
+        function updateCountdown() {
+            if (!lastRefreshTime) return;
+
+            const now = new Date();
+            const elapsed = now - lastRefreshTime;
+            const remaining = REFRESH_INTERVAL - elapsed;
+
+            if (remaining <= 0) return;
+
+            const minutes = Math.floor(remaining / 60000);
+            const seconds = Math.floor((remaining % 60000) / 1000);
+
+            document.getElementById('countdown').textContent =
+                `| Next: ${minutes}m ${seconds}s`;
+        }
+
+        // Format time
+        function formatTime(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes}m`;
+            if (hours < 24) return `${hours}h`;
+            if (days < 7) return `${days}d`;
+            return date.toLocaleDateString();
+        }
+
+        // Format content (linkify URLs, hashtags, mentions)
+        function formatContent(text) {
+            text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" onclick="event.stopPropagation()">$1</a>');
+            text = text.replace(/#(\w+)/g, '<a href="https://x.com/hashtag/$1" target="_blank" onclick="event.stopPropagation()">#$1</a>');
+            text = text.replace(/@(\w+)/g, '<a href="https://x.com/$1" target="_blank" onclick="event.stopPropagation()">@$1</a>');
+            return text;
+        }
+
+        // Update last updated time
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleTimeString();
+        }
+
+        // Mock data fallback
+        function getMockTweets() {
+            const now = new Date();
+            return [
+                { id: '1', accountId: 'VitalikButerin', content: 'The future of Ethereum is about more than just scaling. Layer 2 solutions are just the beginning.', url: 'https://x.com/VitalikButerin/status/1', time: new Date(now - 5 * 60000).toISOString() },
+                { id: '2', accountId: 'CryptoHayes', content: 'Markets are pricing in the macro narrative shift. Watch the DXY closely this week.', url: 'https://x.com/CryptoHayes/status/2', time: new Date(now - 15 * 60000).toISOString() },
+                { id: '3', accountId: 'WatcherGuru', content: 'JUST IN: Bitcoin ETF daily inflows hit new highs, marking significant institutional adoption.', url: 'https://x.com/WatcherGuru/status/3', time: new Date(now - 30 * 60000).toISOString() },
+                { id: '4', accountId: 'jack', content: 'Bitcoin is the only technology that can truly separate money from state.', url: 'https://x.com/jack/status/4', time: new Date(now - 60 * 60000).toISOString() },
+                { id: '5', accountId: 'MessariCrypto', content: 'New research: DeFi TVL continues to recover, driven by restaking protocols.', url: 'https://x.com/MessariCrypto/status/5', time: new Date(now - 90 * 60000).toISOString() },
+            ];
+        }
+
+        // Filter pills click handlers
+        document.getElementById('filterPills').addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-pill')) {
+                const filter = e.target.dataset.filter;
+                if (filter === 'all') filterAll();
+                else filterByAccount(filter);
+            }
+        });
+    </script>
+</body>
+</html>
