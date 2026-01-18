@@ -9,13 +9,10 @@ import json
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-from urllib.request import urlopen, Request, ProxyHandler, build_opener
+from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
-
-# Create an opener that bypasses proxies for localhost
-no_proxy_handler = ProxyHandler({})
-opener = build_opener(no_proxy_handler)
 from urllib.parse import urlparse, parse_qs
+import ssl
 import html
 
 # Configuration
@@ -44,11 +41,15 @@ def fetch_rsshub_feed(username):
 
     try:
         req = Request(url, headers={'User-Agent': 'TodayX/1.0'})
-        # Use opener to bypass proxy for localhost
-        with opener.open(req, timeout=30) as response:
+        # Create SSL context for HTTPS
+        ctx = ssl.create_default_context()
+        with urlopen(req, timeout=30, context=ctx) as response:
             return response.read().decode('utf-8')
     except (URLError, HTTPError) as e:
         print(f"Error fetching RSSHub feed for {username}: {e}")
+        return None
+    except Exception as e:
+        print(f"Unexpected error fetching feed for {username}: {e}")
         return None
 
 def fetch_all_feeds():
