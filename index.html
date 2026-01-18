@@ -62,7 +62,7 @@
             color: #e65100;
         }
 
-        /* Main Layout */
+        /* Main Layout - 3 columns */
         .container {
             display: flex;
             height: calc(100vh - 70px);
@@ -70,8 +70,8 @@
 
         /* Left Sidebar */
         .sidebar {
-            width: 280px;
-            min-width: 280px;
+            width: 240px;
+            min-width: 240px;
             border-right: 1px solid #e5e5e5;
             padding: 16px 12px;
             overflow-y: auto;
@@ -109,7 +109,7 @@
         .account-item {
             display: flex;
             align-items: center;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.15s ease;
@@ -127,8 +127,8 @@
         }
 
         .account-avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: #37352f;
             display: flex;
@@ -136,8 +136,8 @@
             justify-content: center;
             color: #fff;
             font-weight: 600;
-            font-size: 14px;
-            margin-right: 12px;
+            font-size: 12px;
+            margin-right: 10px;
             flex-shrink: 0;
         }
 
@@ -147,7 +147,7 @@
         }
 
         .account-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             color: #37352f;
             white-space: nowrap;
@@ -156,25 +156,18 @@
         }
 
         .account-handle {
-            font-size: 12px;
-            color: #9b9a97;
-        }
-
-        .account-bio {
             font-size: 11px;
             color: #9b9a97;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-top: 2px;
         }
 
-        /* Right Content */
+        /* Center Content */
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 24px 48px;
+            padding: 24px 32px;
             background: #ffffff;
+            max-width: 680px;
+            margin: 0 auto;
         }
 
         .content-header {
@@ -339,6 +332,206 @@
             font-style: italic;
         }
 
+        /* Right Crypto Panel */
+        .crypto-panel {
+            width: 320px;
+            min-width: 320px;
+            border-left: 1px solid #e5e5e5;
+            padding: 16px;
+            overflow-y: auto;
+            background: #fbfbfa;
+        }
+
+        .crypto-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .crypto-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #37352f;
+        }
+
+        .crypto-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .crypto-btn {
+            padding: 4px 8px;
+            font-size: 11px;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            background: #ffffff;
+            color: #9b9a97;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .crypto-btn:hover {
+            border-color: #37352f;
+            color: #37352f;
+        }
+
+        .crypto-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.15s ease;
+        }
+
+        .crypto-card:hover {
+            border-color: #d0d0d0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .crypto-card.highlighted {
+            border-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .crypto-card.highlighted .crypto-badge {
+            display: inline-block;
+        }
+
+        .crypto-badge {
+            display: none;
+            font-size: 10px;
+            background: #f59e0b;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .crypto-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .crypto-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .crypto-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background: #f0f0f0;
+        }
+
+        .crypto-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #37352f;
+        }
+
+        .crypto-symbol {
+            font-size: 12px;
+            color: #9b9a97;
+        }
+
+        .crypto-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #37352f;
+            text-align: right;
+        }
+
+        .crypto-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crypto-change {
+            font-size: 13px;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .crypto-change.positive {
+            color: #16a34a;
+            background: #dcfce7;
+        }
+
+        .crypto-change.negative {
+            color: #dc2626;
+            background: #fee2e2;
+        }
+
+        .crypto-marketcap {
+            font-size: 11px;
+            color: #9b9a97;
+        }
+
+        .crypto-remove {
+            width: 20px;
+            height: 20px;
+            border: none;
+            background: transparent;
+            color: #9b9a97;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .crypto-remove:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .pagination-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            background: #ffffff;
+            color: #37352f;
+            cursor: pointer;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: #f7f6f3;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            font-size: 12px;
+            color: #9b9a97;
+        }
+
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -390,36 +583,6 @@
             background: #bbb;
         }
 
-        /* Filter Pills */
-        .filter-pills {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .filter-pill {
-            padding: 4px 12px;
-            font-size: 12px;
-            border: 1px solid #e5e5e5;
-            border-radius: 16px;
-            background: #ffffff;
-            color: #9b9a97;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .filter-pill:hover {
-            border-color: #37352f;
-            color: #37352f;
-        }
-
-        .filter-pill.active {
-            background: #37352f;
-            border-color: #37352f;
-            color: #ffffff;
-        }
-
         /* Status indicator */
         .status-dot {
             width: 8px;
@@ -456,6 +619,13 @@
         }
 
         /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .crypto-panel {
+                width: 280px;
+                min-width: 280px;
+            }
+        }
+
         @media (max-width: 768px) {
             .header {
                 padding: 12px;
@@ -518,16 +688,21 @@
             .content {
                 padding: 16px;
                 width: 100%;
+                max-width: 100%;
+            }
+
+            .crypto-panel {
+                width: 100%;
+                min-width: 100%;
+                border-left: none;
+                border-top: 1px solid #e5e5e5;
+                max-height: 400px;
             }
 
             .content-header {
                 flex-direction: column;
                 gap: 12px;
                 align-items: flex-start;
-            }
-
-            .filter-pills {
-                display: none;
             }
 
             .tweet-card {
@@ -565,6 +740,10 @@
             .tweet-content {
                 font-size: 13px;
             }
+
+            .crypto-panel {
+                padding: 12px;
+            }
         }
     </style>
 </head>
@@ -594,9 +773,6 @@
                     Refresh
                 </button>
             </div>
-            <div class="filter-pills" id="filterPills">
-                <span class="filter-pill active" data-filter="all">All</span>
-            </div>
             <div id="errorMessage" class="error-message" style="display: none;"></div>
             <div id="tweetList">
                 <div class="loading">
@@ -605,6 +781,25 @@
                 </div>
             </div>
         </main>
+
+        <aside class="crypto-panel">
+            <div class="crypto-header">
+                <div class="crypto-title">Crypto Prices</div>
+                <div class="crypto-actions">
+                    <button class="crypto-btn" onclick="resetCryptoList()">Reset</button>
+                </div>
+            </div>
+            <div id="cryptoList">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+            <div class="pagination" id="cryptoPagination" style="display: none;">
+                <button class="pagination-btn" id="prevPage" onclick="changePage(-1)">Prev</button>
+                <span class="pagination-info" id="pageInfo">1 / 1</span>
+                <button class="pagination-btn" id="nextPage" onclick="changePage(1)">Next</button>
+            </div>
+        </aside>
     </div>
 
     <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
@@ -615,6 +810,40 @@
         // Configuration
         const API_BASE = window.location.origin;
         const REFRESH_INTERVAL = 30 * 60 * 1000; // 30 minutes
+        const CRYPTO_REFRESH_INTERVAL = 60 * 1000; // 1 minute for crypto prices
+        const ITEMS_PER_PAGE = 10;
+
+        // Default coins
+        const DEFAULT_COINS = ['bitcoin', 'ethereum', 'binancecoin'];
+
+        // Coin name mappings for detection
+        const COIN_MAPPINGS = {
+            'bitcoin': ['bitcoin', 'btc', '$btc'],
+            'ethereum': ['ethereum', 'eth', '$eth', 'ether'],
+            'binancecoin': ['bnb', '$bnb', 'binance coin', 'binancecoin'],
+            'solana': ['solana', 'sol', '$sol'],
+            'cardano': ['cardano', 'ada', '$ada'],
+            'ripple': ['xrp', '$xrp', 'ripple'],
+            'dogecoin': ['doge', '$doge', 'dogecoin'],
+            'polkadot': ['dot', '$dot', 'polkadot'],
+            'avalanche-2': ['avax', '$avax', 'avalanche'],
+            'chainlink': ['link', '$link', 'chainlink'],
+            'polygon': ['matic', '$matic', 'polygon'],
+            'tron': ['trx', '$trx', 'tron'],
+            'litecoin': ['ltc', '$ltc', 'litecoin'],
+            'shiba-inu': ['shib', '$shib', 'shiba'],
+            'uniswap': ['uni', '$uni', 'uniswap'],
+            'wrapped-bitcoin': ['wbtc', '$wbtc'],
+            'cosmos': ['atom', '$atom', 'cosmos'],
+            'near': ['near', '$near'],
+            'aptos': ['apt', '$apt', 'aptos'],
+            'arbitrum': ['arb', '$arb', 'arbitrum'],
+            'optimism': ['op', '$op', 'optimism'],
+            'sui': ['sui', '$sui'],
+            'pepe': ['pepe', '$pepe'],
+            'floki': ['floki', '$floki'],
+            'bonk': ['bonk', '$bonk'],
+        };
 
         // Top 10 Crypto Accounts Data
         const accounts = [
@@ -637,15 +866,27 @@
         let countdownInterval = null;
         let translationCache = {};
 
+        // Crypto state
+        let cryptoList = [...DEFAULT_COINS];
+        let cryptoData = {};
+        let highlightedCoins = new Set();
+        let currentPage = 1;
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderAccounts();
             refreshTweets();
+            fetchCryptoPrices();
 
-            // Auto-refresh every 30 minutes
+            // Auto-refresh tweets every 30 minutes
             setInterval(() => {
                 refreshTweets();
             }, REFRESH_INTERVAL);
+
+            // Auto-refresh crypto prices every 1 minute
+            setInterval(() => {
+                fetchCryptoPrices();
+            }, CRYPTO_REFRESH_INTERVAL);
 
             // Update countdown every second
             countdownInterval = setInterval(updateCountdown, 1000);
@@ -660,6 +901,206 @@
             sidebar.classList.toggle('open');
             overlay.classList.toggle('open');
             icon.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+        }
+
+        // Fetch crypto prices from CoinGecko
+        async function fetchCryptoPrices() {
+            if (cryptoList.length === 0) {
+                renderCryptoList();
+                return;
+            }
+
+            try {
+                const ids = cryptoList.join(',');
+                const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&sparkline=false&price_change_percentage=24h`);
+                const data = await response.json();
+
+                data.forEach(coin => {
+                    cryptoData[coin.id] = {
+                        name: coin.name,
+                        symbol: coin.symbol.toUpperCase(),
+                        price: coin.current_price,
+                        change24h: coin.price_change_percentage_24h,
+                        marketCap: coin.market_cap,
+                        image: coin.image
+                    };
+                });
+
+                renderCryptoList();
+            } catch (error) {
+                console.error('Failed to fetch crypto prices:', error);
+            }
+        }
+
+        // Render crypto list with pagination
+        function renderCryptoList() {
+            const container = document.getElementById('cryptoList');
+            const paginationDiv = document.getElementById('cryptoPagination');
+
+            if (cryptoList.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="padding: 24px;">
+                        <p>No coins to display</p>
+                        <button class="crypto-btn" style="margin-top: 12px;" onclick="resetCryptoList()">Reset to Default</button>
+                    </div>
+                `;
+                paginationDiv.style.display = 'none';
+                return;
+            }
+
+            const totalPages = Math.ceil(cryptoList.length / ITEMS_PER_PAGE);
+            currentPage = Math.min(currentPage, totalPages);
+            const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIdx = startIdx + ITEMS_PER_PAGE;
+            const pageCoins = cryptoList.slice(startIdx, endIdx);
+
+            container.innerHTML = pageCoins.map(coinId => {
+                const coin = cryptoData[coinId];
+                if (!coin) {
+                    return `
+                        <div class="crypto-card">
+                            <div class="crypto-top">
+                                <div class="crypto-info">
+                                    <div class="crypto-name">${coinId}</div>
+                                </div>
+                                <div class="loading-spinner" style="width: 16px; height: 16px;"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const isHighlighted = highlightedCoins.has(coinId);
+                const changeClass = coin.change24h >= 0 ? 'positive' : 'negative';
+                const changeSign = coin.change24h >= 0 ? '+' : '';
+                const isDefault = DEFAULT_COINS.includes(coinId);
+
+                return `
+                    <div class="crypto-card ${isHighlighted ? 'highlighted' : ''}">
+                        <div class="crypto-top">
+                            <div class="crypto-info">
+                                <img class="crypto-icon" src="${coin.image}" alt="${coin.name}" onerror="this.style.display='none'">
+                                <div>
+                                    <div class="crypto-name">
+                                        ${coin.name}
+                                        <span class="crypto-badge">Mentioned</span>
+                                    </div>
+                                    <div class="crypto-symbol">${coin.symbol}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div class="crypto-price">$${formatPrice(coin.price)}</div>
+                                ${!isDefault ? `<button class="crypto-remove" onclick="removeCoin('${coinId}')" title="Remove">×</button>` : ''}
+                            </div>
+                        </div>
+                        <div class="crypto-bottom">
+                            <span class="crypto-change ${changeClass}">${changeSign}${coin.change24h?.toFixed(2) || 0}%</span>
+                            <span class="crypto-marketcap">MCap: $${formatMarketCap(coin.marketCap)}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update pagination
+            if (totalPages > 1) {
+                paginationDiv.style.display = 'flex';
+                document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages}`;
+                document.getElementById('prevPage').disabled = currentPage === 1;
+                document.getElementById('nextPage').disabled = currentPage === totalPages;
+            } else {
+                paginationDiv.style.display = 'none';
+            }
+        }
+
+        // Format price
+        function formatPrice(price) {
+            if (price >= 1000) return price.toLocaleString('en-US', { maximumFractionDigits: 0 });
+            if (price >= 1) return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 6 });
+        }
+
+        // Format market cap
+        function formatMarketCap(cap) {
+            if (!cap) return 'N/A';
+            if (cap >= 1e12) return (cap / 1e12).toFixed(2) + 'T';
+            if (cap >= 1e9) return (cap / 1e9).toFixed(2) + 'B';
+            if (cap >= 1e6) return (cap / 1e6).toFixed(2) + 'M';
+            return cap.toLocaleString();
+        }
+
+        // Change page
+        function changePage(delta) {
+            const totalPages = Math.ceil(cryptoList.length / ITEMS_PER_PAGE);
+            const newPage = currentPage + delta;
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                renderCryptoList();
+            }
+        }
+
+        // Remove coin from list
+        function removeCoin(coinId) {
+            cryptoList = cryptoList.filter(c => c !== coinId);
+            highlightedCoins.delete(coinId);
+            renderCryptoList();
+        }
+
+        // Reset to default coins
+        function resetCryptoList() {
+            cryptoList = [...DEFAULT_COINS];
+            highlightedCoins.clear();
+            currentPage = 1;
+            fetchCryptoPrices();
+        }
+
+        // Detect coins mentioned in tweets
+        function detectMentionedCoins(tweetContent) {
+            const content = tweetContent.toLowerCase();
+            const mentioned = [];
+
+            for (const [coinId, keywords] of Object.entries(COIN_MAPPINGS)) {
+                for (const keyword of keywords) {
+                    // Check for word boundary match
+                    const regex = new RegExp(`(^|[\\s,.:!?])${keyword.replace('$', '\\$')}([\\s,.:!?]|$)`, 'i');
+                    if (regex.test(content)) {
+                        mentioned.push(coinId);
+                        break;
+                    }
+                }
+            }
+
+            return mentioned;
+        }
+
+        // Add coin to list if not exists
+        function addCoinIfNotExists(coinId) {
+            if (!cryptoList.includes(coinId)) {
+                cryptoList.push(coinId);
+                highlightedCoins.add(coinId);
+                return true;
+            } else {
+                highlightedCoins.add(coinId);
+                return false;
+            }
+        }
+
+        // Process tweets for coin mentions
+        function processTweetsForCoins(tweetsData) {
+            let newCoinsAdded = false;
+
+            tweetsData.forEach(tweet => {
+                const mentionedCoins = detectMentionedCoins(tweet.content);
+                mentionedCoins.forEach(coinId => {
+                    if (addCoinIfNotExists(coinId)) {
+                        newCoinsAdded = true;
+                    }
+                });
+            });
+
+            if (newCoinsAdded) {
+                fetchCryptoPrices();
+            } else {
+                renderCryptoList();
+            }
         }
 
         // Fetch tweets from API
@@ -682,12 +1123,10 @@
             }
 
             try {
-                // Using Google Translate free endpoint
                 const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q=${encodeURIComponent(text)}`;
                 const response = await fetch(url);
                 const data = await response.json();
 
-                // Extract translated text from response
                 let translated = '';
                 if (data && data[0]) {
                     data[0].forEach(item => {
@@ -708,7 +1147,6 @@
             const btn = document.querySelector(`[data-tweet-id="${tweetId}"] .translate-btn`);
             const translationDiv = document.getElementById(`translation-${tweetId}`);
 
-            // If already translated, toggle visibility
             if (translationDiv.innerHTML && !translationDiv.classList.contains('translation-loading')) {
                 if (translationDiv.style.display === 'none') {
                     translationDiv.style.display = 'block';
@@ -720,12 +1158,10 @@
                 return;
             }
 
-            // Show loading state
             translationDiv.innerHTML = '<span class="translation-loading">翻译中...</span>';
             translationDiv.style.display = 'block';
             btn.disabled = true;
 
-            // Get translation
             const translated = await translateText(originalText, tweetId);
 
             translationDiv.innerHTML = translated;
@@ -745,7 +1181,6 @@
                     <div class="account-info">
                         <div class="account-name">${account.name}</div>
                         <div class="account-handle">${account.handle}</div>
-                        <div class="account-bio">${account.bio}</div>
                     </div>
                 </a>
             `).join('');
@@ -758,7 +1193,6 @@
                 ? tweets
                 : tweets.filter(t => t.accountId === currentFilter);
 
-            // Sort by time descending
             filteredTweets.sort((a, b) => new Date(b.time) - new Date(a.time));
 
             if (filteredTweets.length === 0) {
@@ -819,9 +1253,6 @@
             document.querySelectorAll('.account-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.id === accountId);
             });
-            document.querySelectorAll('.filter-pill').forEach(pill => {
-                pill.classList.toggle('active', pill.dataset.filter === accountId);
-            });
             const account = accounts.find(a => a.id === accountId);
             document.getElementById('contentTitle').textContent = account ? `${account.name}'s Tweets` : 'All Tweets';
             renderTweets();
@@ -831,9 +1262,6 @@
         function filterAll() {
             currentFilter = 'all';
             document.querySelectorAll('.account-item').forEach(item => item.classList.remove('active'));
-            document.querySelectorAll('.filter-pill').forEach(pill => {
-                pill.classList.toggle('active', pill.dataset.filter === 'all');
-            });
             document.getElementById('contentTitle').textContent = 'All Tweets';
             renderTweets();
         }
@@ -856,8 +1284,10 @@
                     errorDiv.textContent = data.message;
                     errorDiv.style.display = 'block';
                 }
+
+                // Process tweets for coin mentions
+                processTweetsForCoins(tweets);
             } else {
-                // Fallback to mock data
                 tweets = getMockTweets();
                 dataSource = 'mock';
                 errorDiv.textContent = 'Could not connect to server. Showing demo data.';
@@ -948,15 +1378,6 @@
                 { id: '5', accountId: 'MessariCrypto', content: 'New research: DeFi TVL continues to recover, driven by restaking protocols.', url: 'https://x.com/MessariCrypto/status/5', time: new Date(now - 90 * 60000).toISOString() },
             ];
         }
-
-        // Filter pills click handlers
-        document.getElementById('filterPills').addEventListener('click', (e) => {
-            if (e.target.classList.contains('filter-pill')) {
-                const filter = e.target.dataset.filter;
-                if (filter === 'all') filterAll();
-                else filterByAccount(filter);
-            }
-        });
     </script>
 </body>
 </html>
