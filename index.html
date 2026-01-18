@@ -108,14 +108,15 @@
 
         .account-item {
             display: flex;
-            align-items: center;
-            padding: 8px 10px;
+            align-items: flex-start;
+            padding: 12px 10px;
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.15s ease;
             text-decoration: none;
             color: inherit;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
+            min-height: 72px;
         }
 
         .account-item:hover {
@@ -127,8 +128,8 @@
         }
 
         .account-avatar {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: #37352f;
             display: flex;
@@ -136,9 +137,10 @@
             justify-content: center;
             color: #fff;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px;
             margin-right: 10px;
             flex-shrink: 0;
+            margin-top: 2px;
         }
 
         .account-info {
@@ -160,6 +162,17 @@
             color: #9b9a97;
         }
 
+        .account-bio {
+            font-size: 11px;
+            color: #9b9a97;
+            margin-top: 4px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
         /* Center Content */
         .content {
             flex: 1;
@@ -179,9 +192,31 @@
             border-bottom: 1px solid #e5e5e5;
         }
 
+        .content-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .content-title {
             font-size: 18px;
             font-weight: 600;
+            color: #37352f;
+        }
+
+        .back-all-btn {
+            padding: 4px 10px;
+            font-size: 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            background: #ffffff;
+            color: #9b9a97;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .back-all-btn:hover {
+            border-color: #37352f;
             color: #37352f;
         }
 
@@ -385,11 +420,27 @@
             padding: 12px;
             margin-bottom: 10px;
             transition: all 0.15s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: inherit;
         }
 
         .crypto-card:hover {
             border-color: #d0d0d0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .crypto-link {
+            font-size: 11px;
+            color: #2383e2;
+            text-decoration: none;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .crypto-link:hover {
+            text-decoration: underline;
         }
 
         .crypto-card.highlighted {
@@ -768,7 +819,10 @@
 
         <main class="content">
             <div class="content-header">
-                <div class="content-title" id="contentTitle">All Tweets</div>
+                <div class="content-title-wrap">
+                    <div class="content-title" id="contentTitle">All Tweets</div>
+                    <button class="back-all-btn" id="backAllBtn" onclick="filterAll()" style="display: none;">← All</button>
+                </div>
                 <button class="refresh-btn" id="refreshBtn" onclick="refreshTweets()">
                     Refresh
                 </button>
@@ -975,7 +1029,7 @@
                 const isDefault = DEFAULT_COINS.includes(coinId);
 
                 return `
-                    <div class="crypto-card ${isHighlighted ? 'highlighted' : ''}">
+                    <div class="crypto-card ${isHighlighted ? 'highlighted' : ''}" onclick="window.open('https://www.coingecko.com/en/coins/${coinId}', '_blank')">
                         <div class="crypto-top">
                             <div class="crypto-info">
                                 <img class="crypto-icon" src="${coin.image}" alt="${coin.name}" onerror="this.style.display='none'">
@@ -989,13 +1043,14 @@
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <div class="crypto-price">$${formatPrice(coin.price)}</div>
-                                ${!isDefault ? `<button class="crypto-remove" onclick="removeCoin('${coinId}')" title="Remove">×</button>` : ''}
+                                ${!isDefault ? `<button class="crypto-remove" onclick="event.stopPropagation(); removeCoin('${coinId}')" title="Remove">×</button>` : ''}
                             </div>
                         </div>
                         <div class="crypto-bottom">
                             <span class="crypto-change ${changeClass}">${changeSign}${coin.change24h?.toFixed(2) || 0}%</span>
                             <span class="crypto-marketcap">MCap: $${formatMarketCap(coin.marketCap)}</span>
                         </div>
+                        <a class="crypto-link" href="https://www.coingecko.com/en/coins/${coinId}" target="_blank" onclick="event.stopPropagation()">View Details →</a>
                     </div>
                 `;
             }).join('');
@@ -1181,6 +1236,7 @@
                     <div class="account-info">
                         <div class="account-name">${account.name}</div>
                         <div class="account-handle">${account.handle}</div>
+                        <div class="account-bio">${account.bio}</div>
                     </div>
                 </a>
             `).join('');
@@ -1255,6 +1311,7 @@
             });
             const account = accounts.find(a => a.id === accountId);
             document.getElementById('contentTitle').textContent = account ? `${account.name}'s Tweets` : 'All Tweets';
+            document.getElementById('backAllBtn').style.display = 'inline-block';
             renderTweets();
         }
 
@@ -1263,6 +1320,7 @@
             currentFilter = 'all';
             document.querySelectorAll('.account-item').forEach(item => item.classList.remove('active'));
             document.getElementById('contentTitle').textContent = 'All Tweets';
+            document.getElementById('backAllBtn').style.display = 'none';
             renderTweets();
         }
 
