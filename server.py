@@ -28,7 +28,7 @@ ACCOUNTS = [
     {'id': 'jack', 'name': 'Jack Dorsey', 'handle': '@jack', 'bio': 'Block CEO, Bitcoin advocate'},
     {'id': 'aantonop', 'name': 'Andreas Antonopoulos', 'handle': '@aantonop', 'bio': 'Bitcoin educator'},
     {'id': 'MMCrypto', 'name': 'MMCrypto', 'handle': '@MMCrypto', 'bio': 'Crypto trader'},
-    {'id': 'cabornetwho', 'name': 'CZ Binance', 'handle': '@cabornetwho', 'bio': 'Former Binance CEO'},
+    {'id': 'cz_binance', 'name': 'CZ Binance', 'handle': '@cz_binance', 'bio': 'Binance founder'},
     {'id': 'MessariCrypto', 'name': 'Messari', 'handle': '@MessariCrypto', 'bio': 'Crypto research'},
     {'id': 'TheBlock__', 'name': 'The Block', 'handle': '@TheBlock__', 'bio': 'Crypto news'},
     {'id': 'WatcherGuru', 'name': 'Watcher.Guru', 'handle': '@WatcherGuru', 'bio': 'Breaking crypto news'},
