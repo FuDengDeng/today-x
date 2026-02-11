@@ -953,7 +953,7 @@
             icon.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
         }
 
-        // Fetch crypto prices from CoinGecko
+        // Fetch crypto prices via backend proxy
         async function fetchCryptoPrices() {
             if (cryptoList.length === 0) {
                 renderCryptoList();
@@ -962,10 +962,16 @@
 
             try {
                 const ids = cryptoList.join(',');
-                const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&sparkline=false&price_change_percentage=24h`);
-                const data = await response.json();
+                const response = await fetch(`${API_BASE}/api/crypto?ids=${ids}`);
+                const result = await response.json();
 
-                data.forEach(coin => {
+                if (!result.success || !Array.isArray(result.data)) {
+                    console.error('Crypto API error:', result.error || 'unknown');
+                    renderCryptoList();
+                    return;
+                }
+
+                result.data.forEach(coin => {
                     cryptoData[coin.id] = {
                         name: coin.name,
                         symbol: coin.symbol.toUpperCase(),
@@ -979,6 +985,7 @@
                 renderCryptoList();
             } catch (error) {
                 console.error('Failed to fetch crypto prices:', error);
+                renderCryptoList();
             }
         }
 

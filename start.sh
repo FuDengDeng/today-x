@@ -29,7 +29,7 @@ case $MODE in
         echo "Running Python server on http://localhost:8000"
         echo "Press Ctrl+C to stop"
         echo ""
-        python3 server.py
+        ALL_PROXY= HTTP_PROXY= HTTPS_PROXY= python3 server.py
         ;;
 
     full)
@@ -69,7 +69,7 @@ case $MODE in
 
         # Start Python server
         echo "Starting Python server..."
-        XRSS_URL=http://localhost:8001 python3 server.py
+        ALL_PROXY= HTTP_PROXY= HTTPS_PROXY= XRSS_URL=http://localhost:8001 python3 server.py
         ;;
 
     stop)

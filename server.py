@@ -14,11 +14,17 @@ from urllib.error import URLError, HTTPError
 from urllib.parse import urlparse, parse_qs
 import ssl
 import html
+import time
 
 # Configuration
 RSSHUB_URL = os.getenv('RSSHUB_URL', 'http://localhost:1200')
 ACCESS_KEY = os.getenv('ACCESS_KEY', 'todayx2026')
 PORT = int(os.getenv('PORT', 8000))
+COINGECKO_API_KEY = os.getenv('COINGECKO_API_KEY', '')
+
+# Crypto price cache (60 seconds TTL)
+_crypto_cache = {'data': None, 'ids': '', 'ts': 0}
+CRYPTO_CACHE_TTL = 60
 
 # Top 10 Crypto Accounts
 ACCOUNTS = [
@@ -118,15 +124,63 @@ def parse_rss_to_json(rss_xml, account=None):
 
     return tweets
 
+def fetch_crypto_prices(ids_str):
+    """Fetch crypto prices from CoinGecko with caching"""
+    now = time.time()
+    if (_crypto_cache['data'] is not None
+            and _crypto_cache['ids'] == ids_str
+            and now - _crypto_cache['ts'] < CRYPTO_CACHE_TTL):
+        return _crypto_cache['data']
+
+    url = (f"https://api.coingecko.com/api/v3/coins/markets"
+           f"?vs_currency=usd&ids={ids_str}"
+           f"&order=market_cap_desc&sparkline=false"
+           f"&price_change_percentage=24h")
+    if COINGECKO_API_KEY:
+        url += f"&x_cg_demo_api_key={COINGECKO_API_KEY}"
+
+    try:
+        req = Request(url, headers={
+            'User-Agent': 'TodayX/1.0',
+            'Accept': 'application/json',
+        })
+        ctx = ssl.create_default_context()
+        with urlopen(req, timeout=15, context=ctx) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+        if isinstance(data, list):
+            _crypto_cache['data'] = data
+            _crypto_cache['ids'] = ids_str
+            _crypto_cache['ts'] = now
+            return data
+        # CoinGecko returned an error object
+        print(f"CoinGecko API error: {data}")
+        return None
+    except Exception as e:
+        print(f"Failed to fetch crypto prices: {e}")
+        return None
+
+
 class RequestHandler(SimpleHTTPRequestHandler):
     """Custom HTTP request handler"""
 
     def do_GET(self):
         parsed = urlparse(self.path)
+        qs = parse_qs(parsed.query)
 
         # API endpoint for tweets
         if parsed.path == '/api/tweets':
             self.send_json_response(self.get_tweets())
+        # API endpoint for crypto prices (proxy CoinGecko)
+        elif parsed.path == '/api/crypto':
+            ids_str = qs.get('ids', [''])[0]
+            if not ids_str:
+                self.send_json_response({'success': False, 'error': 'Missing ids parameter'})
+            else:
+                data = fetch_crypto_prices(ids_str)
+                if data is not None:
+                    self.send_json_response({'success': True, 'data': data})
+                else:
+                    self.send_json_response({'success': False, 'error': 'Failed to fetch prices'})
         # API endpoint for accounts
         elif parsed.path == '/api/accounts':
             self.send_json_response(ACCOUNTS)
