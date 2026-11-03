@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>新生家庭安全感课堂</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap">
+<script>
+/* PDF / 演示模式需要在渲染前确定 */
+(function(){try{if(/[?&]pdf/.test(location.search)){document.documentElement.classList.add('pdf','fixed');}}catch(e){}})();
+</script>
+<style>
+/* 布局：滚动阅读（手机友好）+ 演示模式（1280×720 单页）+ PDF（同一尺寸每页一张） */
+:root{
+  --bg:#EAF1F0; --stage:#0E1B1B; --surface:#FFFFFF; --ink:#16302F; --muted:#557270; --line:#D3E0DE;
+  --accent:#1D6B66; --accent-soft:#DCEEEB; --warm:#C9573F; --warm-soft:#FBE7E0; --gold-soft:#FFF3D6; --gold:#8A6212;
+  --serif:"Noto Serif SC","Songti SC","STSong","Source Han Serif SC","WenQuanYi Zen Hei",serif;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei","Source Han Sans SC","WenQuanYi Zen Hei",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1C1C; --stage:#060D0D; --surface:#172A2A; --ink:#E5F0EE; --muted:#9DB6B3; --line:#2A4343;
+  --accent:#62C4BA; --accent-soft:#1E3C3A; --warm:#F09A84; --warm-soft:#3B2722; --gold-soft:#3A3117; --gold:#E7C46A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1C1C; --stage:#060D0D; --surface:#172A2A; --ink:#E5F0EE; --muted:#9DB6B3; --line:#2A4343;
+  --accent:#62C4BA; --accent-soft:#1E3C3A; --warm:#F09A84; --warm-soft:#3B2722; --gold-soft:#3A3117; --gold:#E7C46A; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+h1,h2,h3,p,ul,ol,table{margin:0}
+ul,ol{padding-left:1.2em}
+li+li{margin-top:.35em}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* 顶栏 */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.bar b{font-family:var(--serif);font-size:17px}
+.bar nav{display:flex;gap:4px;flex-wrap:wrap}
+.bar a.jump{font-size:13px;text-decoration:none;color:var(--muted);padding:4px 10px;border-radius:99px;border:1px solid transparent}
+.bar a.jump:hover{border-color:var(--line);color:var(--ink)}
+.tools{display:flex;gap:8px}
+button{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 14px;border-radius:99px}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button[aria-pressed="true"]{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+
+.deck{max-width:1120px;margin:28px auto 0;display:flex;flex-direction:column;gap:28px}
+
+/* 单页 */
+.slide{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:44px 56px 56px;
+  display:flex;flex-direction:column;gap:20px;scroll-margin-top:84px;min-width:0}
+.kicker{font-size:14px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+.kicker span{color:var(--muted);font-weight:400;letter-spacing:.04em}
+h2{font-family:var(--serif);font-size:36px;line-height:1.3;text-wrap:balance;font-weight:700}
+h3{font-size:21px;line-height:1.4}
+.slide p,.slide li{font-size:20px;line-height:1.65}
+.lead{font-size:23px!important;color:var(--ink)}
+.muted{color:var(--muted)}
+.small,.slide p.small,.slide li.small{font-size:16px}
+.foot{position:absolute;left:56px;right:56px;bottom:16px;display:flex;justify-content:space-between;gap:16px;font-size:12px;color:var(--muted)}
+
+.c2,.c3,.c4{display:grid;gap:18px;min-width:0}
+.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--accent-soft);border-radius:12px;padding:18px 22px;min-width:0}
+.card.warm{background:var(--warm-soft)}
+.card.gold{background:var(--gold-soft)}
+.card.plain{background:transparent;border:1px solid var(--line)}
+.card h3{margin-bottom:6px}
+.card p,.card li{font-size:18px!important;line-height:1.6!important}
+.tag{display:inline-block;font-size:13px;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--accent);color:var(--surface);margin-bottom:8px}
+.tag.warm{background:var(--warm)}
+.tag.gold{background:var(--gold)}
+.big{font-family:var(--serif);font-size:44px;line-height:1.1;color:var(--accent);font-weight:700}
+.warn{color:var(--warm);font-weight:700}
+
+table{border-collapse:collapse;width:100%;font-size:17px;table-layout:fixed}
+th,td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;line-height:1.5}
+th{font-size:14px;color:var(--muted);font-weight:700;letter-spacing:.06em}
+td:first-child{font-weight:700;color:var(--accent)}
+.tscroll{overflow-x:auto;min-width:0}
+
+/* 封面 */
+.cover{background:var(--accent);color:#fff;border-color:var(--accent);justify-content:center;gap:22px;overflow:hidden}
+.cover .kicker,.cover .kicker span{color:#CFEAE6}
+.cover h1{font-family:var(--serif);font-size:62px;line-height:1.2;font-weight:700;text-wrap:balance;margin:0;max-width:760px}
+.cover p{font-size:24px!important;color:#E3F3F0;max-width:640px}
+.cover .meta{font-size:16px!important;color:#BFE0DB;margin-top:8px}
+.cover svg{position:absolute;right:-90px;bottom:-110px;width:560px;height:560px;opacity:.9;pointer-events:none}
+.cover .foot{color:#BFE0DB}
+
+/* 时间轴 */
+.tl{display:grid;grid-template-columns:repeat(60,1fr);height:16px;border-radius:99px;overflow:hidden;gap:2px;margin-top:6px}
+.tl i{display:block;background:var(--accent)}
+.tl i:nth-child(2){background:#3E8F89}.tl i:nth-child(3){background:#6AAEA8}.tl i:nth-child(4){background:var(--warm)}.tl i:nth-child(5){background:var(--gold)}.tl i:nth-child(6){background:#7B9A97}.tl i:nth-child(7){background:var(--muted)}
+.agenda{display:grid;gap:10px}
+.agenda div{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+.agenda b{font-family:var(--serif);color:var(--accent);font-size:20px;white-space:nowrap}
+.agenda span{font-size:19px}.agenda em{font-style:normal;color:var(--muted);font-size:16px}
+
+/* 清单 */
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px}
+.check li{margin:0}
+.check label{display:flex;gap:12px;align-items:flex-start;font-size:18px;line-height:1.5;cursor:pointer}
+.check input{width:22px;height:22px;margin-top:3px;accent-color:var(--accent);flex:none}
+
+/* 图 */
+.chart{width:100%;height:auto;max-height:420px}
+.chart text{fill:var(--ink);font-family:var(--sans);font-size:14px}
+.chart .ax{stroke:var(--muted);stroke-width:1}
+.chart .gridl{stroke:var(--line);stroke-width:1}
+.chart .muted{fill:var(--muted)}
+
+/* 讲师备注 */
+.notes{display:none;margin:-14px 0 0;padding:14px 20px;border:1px dashed var(--accent);border-radius:12px;background:var(--surface);font-size:15px;color:var(--ink)}
+.notes b{color:var(--accent)}
+.notes p{font-size:15px!important;line-height:1.65!important}
+.show-notes .notes{display:block}
+.slotwrap{display:flex;flex-direction:column;gap:14px;min-width:0}
+
+/* 演示 & PDF：固定 1280×720 */
+.fixed .slide{width:1280px;height:720px;overflow:hidden;border-radius:0;padding:40px 64px 56px;gap:18px;justify-content:flex-start}
+.fixed .cover{justify-content:center}
+.fixed h2{font-size:42px}
+.fixed .slide p,.fixed .slide li{font-size:23px}
+.fixed .lead{font-size:28px!important}
+.fixed .small,.fixed .slide p.small{font-size:19px}
+.fixed .card p,.fixed .card li{font-size:21px!important}
+.fixed .card h3{font-size:25px}
+.fixed .big{font-size:50px}
+.fixed table{font-size:20px}.fixed th{font-size:15px}
+.fixed .check label{font-size:22px}
+.fixed .agenda span{font-size:22px}.fixed .agenda em{font-size:18px}.fixed .agenda b{font-size:22px}
+.fixed .kicker{font-size:16px}
+.fixed .foot{left:64px;right:64px}
+.fixed .bar,.fixed .notes,.fixed body::before{display:none!important}
+.fixed .slotwrap{display:contents}
+.pdf body{background:#fff;padding:0}
+.pdf .deck{margin:0;gap:0;max-width:none}
+.pdf .slide{border:0;break-after:page;page-break-after:always;scroll-margin-top:0}
+.present body{padding:0}
+.present .deck{position:fixed;inset:0;margin:0;max-width:none;background:var(--stage);z-index:50}
+.present .slotwrap{display:none}
+.present .slotwrap.active{display:block}
+.present .slide{position:absolute;left:50%;top:50%;transform-origin:center center;border:0}
+.present .navhint{display:flex}
+.navhint{display:none;position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:60;gap:8px}
+.navhint button{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}
+@page{size:1280px 720px;margin:0}
+@media print{.bar,.notes,.navhint{display:none!important}body{background:#fff}.slide{break-inside:avoid}}
+
+/* 手机 */
+@media (max-width:760px){
+  html:not(.fixed) .slide{padding:28px 20px 44px}
+  html:not(.fixed) .foot{left:20px;right:20px}
+  html:not(.fixed) h2{font-size:27px}
+  html:not(.fixed) .slide p,html:not(.fixed) .slide li{font-size:17px}
+  html:not(.fixed) .lead{font-size:18px!important}
+  html:not(.fixed) .c2,html:not(.fixed) .c3,html:not(.fixed) .c4,html:not(.fixed) .check{grid-template-columns:minmax(0,1fr)}
+  html:not(.fixed) .cover h1{font-size:38px}
+  html:not(.fixed) .cover p{font-size:18px!important}
+  html:not(.fixed) .big{font-size:34px}
+  html:not(.fixed) .agenda div{grid-template-columns:78px 1fr;gap:10px}
+  html:not(.fixed) .bar nav{display:none}
+  html:not(.fixed) .tscroll table{min-width:560px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+<header class="bar">
+  <b>新生家庭安全感课堂</b>
+  <nav aria-label="章节">
+    <a class="jump" href="#s4">母婴健康</a><a class="jump" href="#s9">家庭财务</a><a class="jump" href="#s13">保障型</a><a class="jump" href="#s19">储蓄型</a><a class="jump" href="#s25">行动清单</a>
+  </nav>
+  <div class="tools">
+    <button id="btnNotes" type="button" aria-pressed="false">讲师备注</button>
+    <button id="btnPresent" type="button">演示模式</button>
+  </div>
+</header>
+
+<main class="deck" id="deck">
+
+<!-- 1 封面 -->
+<div class="slotwrap"><section class="slide cover" id="s1">
+  <svg viewBox="0 0 560 560" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="1.5"><circle cx="280" cy="280" r="60" opacity=".9"/><circle cx="280" cy="280" r="120" opacity=".65"/><circle cx="280" cy="280" r="180" opacity=".45"/><circle cx="280" cy="280" r="240" opacity=".3"/><circle cx="280" cy="280" r="300" opacity=".18"/></g><circle cx="280" cy="280" r="26" fill="#fff" opacity=".9"/></svg>
+  <div class="kicker">母婴健康 × 家庭财务 <span>· 科普分享 · 60 分钟</span></div>
+  <h1>新生家庭的安全感</h1>
+  <p>孩子出生后的前一年，家里最需要的两样东西：把人照顾好，把钱安排稳。</p>
+  <p class="meta">分享人：【讲师姓名 · 所属机构 · 执业证编号】　｜　地点：【月子中心名称】</p>
+</section>
+<aside class="notes"><p><b>0:00–0:02 · 开场。</b>先自报身份：姓名、机构、从事保险服务，并说明今天的定位是科普交流。坦诚身份比任何包装都更容易赢得信任。语气放慢，像和朋友聊天。</p></aside></div>
+
+<!-- 2 约定 -->
+<div class="slotwrap"><section class="slide" id="s2">
+  <div class="kicker">开场 <span>· 先说清楚今天怎么聊</span></div>
+  <h2>四个约定，让这一小时轻松一点</h2>
+  <div class="c2">
+    <div class="card"><span class="tag">约定一</span><h3>以科普为主</h3><p>一半时间讲宝宝和妈妈的健康常识，一半时间讲家庭怎么把风险和钱安排清楚。</p></div>
+    <div class="card"><span class="tag">约定二</span><h3>不推销，不收款</h3><p>今天不会介绍具体产品名称，也不会演示收益，现场不签任何东西。</p></div>
+    <div class="card"><span class="tag">约定三</span><h3>不需要留任何信息</h3><p>资料可以直接带走。想进一步了解，再自己决定要不要联系。</p></div>
+    <div class="card"><span class="tag">约定四</span><h3>随时提问，随时休息</h3><p>宝宝哭了、需要喂奶，随时离开，课件和手册都会留给你。</p></div>
+  </div>
+  <div class="foot"><span>科普分享，不构成投保建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>0:02–0:04 · 建立安全感。</b>这一页决定后面 56 分钟听众的防备程度。逐条念出来，并且言出必行：不要在中途发产品单页，不要要求扫码留资料作为入场条件。</p></aside></div>
+
+<!-- 3 安排 -->
+<div class="slotwrap"><section class="slide" id="s3">
+  <div class="kicker">开场 <span>· 60 分钟安排</span></div>
+  <h2>先照顾好人，再安排好钱</h2>
+  <div class="tl" aria-hidden="true"><i style="grid-column:span 4"></i><i style="grid-column:span 10"></i><i style="grid-column:span 9"></i><i style="grid-column:span 14"></i><i style="grid-column:span 11"></i><i style="grid-column:span 4"></i><i style="grid-column:span 8"></i></div>
+  <div class="agenda">
+    <div><b>0–4′</b><span>开场与约定 <em>· 今天怎么聊</em></span></div>
+    <div><b>4–14′</b><span>母婴健康科普 <em>· 宝宝前 28 天、妈妈产后 42 天</em></span></div>
+    <div><b>14–23′</b><span>家庭财务安全地图 <em>· 已有保障、新增压力、钱的四个用途</em></span></div>
+    <div><b>23–37′</b><span>保障型产品科普 <em>· 医疗、重疾、意外、寿险怎么分工</em></span></div>
+    <div><b>37–48′</b><span>储蓄型产品科普 <em>· 它是什么、适合谁、有哪些坑</em></span></div>
+    <div><b>48–52′</b><span>做决定的清单 <em>· 家庭安全感自查</em></span></div>
+    <div><b>52–60′</b><span>答疑与后续 <em>· 想继续的人，有三种轻松的方式</em></span></div>
+  </div>
+  <div class="foot"><span>科普分享，不构成投保建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>0:04 · 节奏提示。</b>若现场听众以产妇为主，建议把母婴健康部分放宽到 12 分钟，压缩储蓄型到 9 分钟。看到有人看手机或照看宝宝，就把某一页讲短，不要硬讲。</p></aside></div>
+
+<!-- 4 新生儿 -->
+<div class="slotwrap"><section class="slide" id="s4">
+  <div class="kicker">第一部分 · 母婴健康 <span>· 10 分钟</span></div>
+  <h2>宝宝的前 28 天：家人最该会看的四件事</h2>
+  <div class="c4">
+    <div class="card"><span class="tag">吃</span><h3>喂养够不够</h3><p>24 小时喂 8–12 次。出生第 5 天起，每天湿尿布 6 片以上，说明吃得够。</p></div>
+    <div class="card"><span class="tag">热</span><h3>体温稳不稳</h3><p>腋温 36.5–37.5℃ 属正常。3 个月内发热（肛温 ≥ 38℃）要尽快就医，不自行用药。</p></div>
+    <div class="card gold"><span class="tag gold">黄</span><h3>黄疸退不退</h3><p>24 小时内出现、进展很快、蔓延到手心脚心，或满 2 周仍不退，都要让医生看。</p></div>
+    <div class="card warm"><span class="tag warm">呼吸</span><h3>呼吸与精神</h3><p>安静时呼吸持续偏快、口唇发紫、呻吟、特别爱睡叫不醒，应立即就医。</p></div>
+  </div>
+  <p class="muted small">新生儿状态变化快。判断不准时，“多问一次、早去一次”几乎没有坏处。以上为通用科普，具体以医生意见为准。</p>
+  <div class="foot"><span>内容参考通用儿科与新生儿护理指南，不替代医生建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>4–8′。</b>用月子中心护理师的日常观察作类比：“她们每天帮你看的，其实就是这四样”。这样既不制造焦虑，也让听众觉得你尊重中心的专业。</p></aside></div>
+
+<!-- 5 安全睡眠 -->
+<div class="slotwrap"><section class="slide" id="s5">
+  <div class="kicker">第一部分 · 母婴健康 <span>· 回家后的第一道防线</span></div>
+  <h2>回家以后，最容易被忽略的三件小事</h2>
+  <div class="c3">
+    <div class="card"><h3>1 · 安全睡眠</h3><ul><li>仰卧，独自睡在婴儿床</li><li>床垫偏硬，床上不放枕头、被子、毛绒玩具</li><li>不与大人同睡一张床，不过度包裹</li></ul></div>
+    <div class="card"><h3>2 · 防呛与防摔</h3><ul><li>喂完拍嗝，竖抱片刻</li><li>换尿布、洗澡时手不离开宝宝</li><li>奶瓶、安抚奶嘴定期检查老化</li></ul></div>
+    <div class="card"><h3>3 · 出院第一程</h3><ul><li>从医院、月子中心回家那天，就使用汽车安全座椅</li><li>不抱着宝宝坐副驾驶</li><li>座椅安装后让专业人员复核</li></ul></div>
+  </div>
+  <div class="card plain"><p><b>一个共同点：</b>这些事都不贵，也不复杂，但都靠“习惯”。把它们写成家里的小贴士，奶奶、外婆、月嫂都看得到。</p></div>
+  <div class="foot"><span>内容参考通用婴儿安全睡眠建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>8–10′。</b>这一页是整场最“有用”的一页，听众会拍照。讲完可以提一句：“这页我放进了带走的手册里。”</p></aside></div>
+
+<!-- 6 产妇 -->
+<div class="slotwrap"><section class="slide" id="s6">
+  <div class="kicker">第一部分 · 母婴健康 <span>· 妈妈同样需要被照顾</span></div>
+  <h2>产后 42 天：妈妈身体的恢复信号</h2>
+  <div class="c2">
+    <div class="card"><h3>属于正常恢复</h3>
+      <ul><li>恶露由红变淡，一般持续 4–6 周</li><li>伤口轻度疼痛，逐日减轻</li><li>乳房胀满，经哺乳后缓解</li><li>出汗多、容易疲倦</li></ul></div>
+    <div class="card warm"><h3>需要及时联系医生</h3>
+      <ul><li>1 小时浸透 1 片以上卫生巾，或出现大血块</li><li>发热 ≥ 38℃，伤口红肿流脓</li><li>一侧小腿肿痛，或胸痛、气促</li><li>剧烈头痛、视物模糊</li><li>乳房红肿硬块并伴发热</li></ul></div>
+  </div>
+  <p class="muted small">产后 42 天复查（含盆底评估）不要错过。复查不是“走流程”，是检查子宫、伤口、血压和情绪的一次完整体检。</p>
+  <div class="foot"><span>内容参考通用产后护理建议，不替代医生建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>10–12′。</b>如果现场有月子中心护理负责人，可以请她补充一两句本中心的转诊流程，这能让听众把你和中心的专业感联系起来。</p></aside></div>
+
+<!-- 7 情绪 -->
+<div class="slotwrap"><section class="slide" id="s7">
+  <div class="kicker">第一部分 · 母婴健康 <span>· 看不见的恢复</span></div>
+  <h2>产后情绪：很常见，也是可以被帮助的</h2>
+  <div class="c3">
+    <div class="card"><div class="big">50–80%</div><p>的新手妈妈会经历产后几天的情绪低落（“baby blues”），通常 2 周内逐渐缓解。</p></div>
+    <div class="card gold"><div class="big">约 10–20%</div><p>的产妇会出现更持续的产后抑郁或焦虑。不同研究口径略有差异，这是常见范围。</p></div>
+    <div class="card warm"><div class="big">2 周</div><p>情绪低落持续超过 2 周，或出现伤害自己、伤害孩子的念头，请马上告诉家人并联系医院。</p></div>
+  </div>
+  <div class="card plain"><h3>家人可以做的</h3><p>替她分担夜里的一两次喂养；不评价“你怎么这么脆弱”；陪她去复查，并问一句“你最近睡得好吗？”</p></div>
+  <div class="foot"><span>数据为公开研究的常见范围，仅作科普参考</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>12–13′。</b>这页要慢。不要抢着过渡到钱的话题。可以停顿几秒，让听众感到被理解。</p></aside></div>
+
+<!-- 8 小结 -->
+<div class="slotwrap"><section class="slide" id="s8">
+  <div class="kicker">第一部分 · 小结 <span>· 从“照护”走向“托底”</span></div>
+  <h2>好的照护，等于“观察 + 及时求助 + 有人托底”</h2>
+  <div class="c3">
+    <div class="card"><h3>观察</h3><p>知道看什么，家人不慌，也不错过信号。</p></div>
+    <div class="card"><h3>及时求助</h3><p>该去医院就去，不因为“怕麻烦”“怕花钱”而拖延。</p></div>
+    <div class="card"><h3>有人托底</h3><p>当真的需要住院、治疗、休养时，家里的钱和保障能让人安心做决定。</p></div>
+  </div>
+  <p class="lead">“托底”这一件事，就是接下来 35 分钟要聊的内容。</p>
+  <div class="foot"><span>科普分享，不构成投保建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>13–14′。</b>这是自然转场，不要用恐吓式过渡（例如“万一孩子出事怎么办”）。用“让决定不被钱卡住”替代。</p></aside></div>
+
+<!-- 9 新增变化 -->
+<div class="slotwrap"><section class="slide" id="s9">
+  <div class="kicker">第二部分 · 家庭财务安全地图 <span>· 9 分钟</span></div>
+  <h2>孩子出生后，家里账本发生了三种变化</h2>
+  <div class="c3">
+    <div class="card warm"><span class="tag warm">支出增加</span><h3>新增长期支出</h3><p>奶粉尿布、医疗、早教、托育，以及未来的教育。很多支出是“固定且持续”的。</p></div>
+    <div class="card gold"><span class="tag gold">收入波动</span><h3>收入可能暂时变化</h3><p>产假、哺乳期、带娃分工，让家庭收入在一段时间内不如以往稳定。</p></div>
+    <div class="card"><span class="tag">责任变长</span><h3>责任跨度变长</h3><p>从“照顾自己”变成“要陪孩子走到独立”，时间可能长达二十年以上。</p></div>
+  </div>
+  <p class="lead">账本变了，安排钱的思路也需要变一变，但不必一次做完。</p>
+  <div class="foot"><span>科普分享，不构成投保建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>14–17′。</b>可以让听众在手册的“家庭账本”栏里先写下自己的大致月支出（不需要说出来）。让她们自己动手，比你说得多更有效。</p></aside></div>
+
+<!-- 10 盘点 -->
+<div class="slotwrap"><section class="slide" id="s10">
+  <div class="kicker">第二部分 · 家庭财务安全地图 <span>· 先看已经有什么</span></div>
+  <h2>买任何东西之前，先盘点已有的保障</h2>
+  <div class="tscroll"><table>
+    <thead><tr><th style="width:21%">已有保障</th><th style="width:40%">通常能帮到什么</th><th style="width:39%">需要留意</th></tr></thead>
+    <tbody>
+      <tr><td>居民/职工医保</td><td>住院和部分门诊费用按规定报销。新生儿出生当年即可随父母享受待遇。</td><td>办理参保登记有时限（多数地区约 90 天，请向当地医保部门确认）。自费药、进口药、特需服务一般不在报销范围。</td></tr>
+      <tr><td>生育保险</td><td>产检、分娩相关医疗费用及生育津贴（视当地政策和参保情况）。</td><td>通常不含月子中心、月嫂、母婴用品等费用。</td></tr>
+      <tr><td>单位福利</td><td>团体医疗、团体意外等补充保障。</td><td>离职后一般失效，保障额度也往往有限。</td></tr>
+      <tr><td>已有商业保险</td><td>个人已买的医疗、重疾、意外、寿险。</td><td>翻出保单，确认保额、保障期限、受益人与是否仍在有效期内。</td></tr>
+    </tbody></table></div>
+  <p class="muted small">盘点的目的：知道“缺什么”，而不是“买什么”。有时发现已经够了，也是好结果。</p>
+  <div class="foot"><span>政策以当地医保、人社部门最新规定为准</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>17–20′。</b>主动提醒“有时发现已经够了”，这是建立信任的关键点：让听众看到你不是来推销的。可以提示她们回家后拍下现有保单，照着手册自查。</p></aside></div>
+
+<!-- 11 四个用途 -->
+<div class="slotwrap"><section class="slide" id="s11">
+  <div class="kicker">第二部分 · 家庭财务安全地图 <span>· 钱的四个用途</span></div>
+  <h2>家庭的钱，大致可以分成四种用途</h2>
+  <div class="c4">
+    <div class="card"><span class="tag">日常</span><h3>要花的钱</h3><p>未来 3–6 个月的生活开销，放在随时能取的地方，作为“应急金”。</p></div>
+    <div class="card warm"><span class="tag warm">保障</span><h3>保命的钱</h3><p>用较小的固定支出，把大额风险转移出去，如重病、重大意外、家庭支柱出事。</p></div>
+    <div class="card gold"><span class="tag gold">长期</span><h3>稳稳的钱</h3><p>教育金、养老金这类“一定会用到、时间已知”的钱，更看重确定性。</p></div>
+    <div class="card plain"><span class="tag">增值</span><h3>生钱的钱</h3><p>能承担波动的闲置资金，用于长期投资，可能赚也可能亏。</p></div>
+  </div>
+  <div class="card plain"><p><b>常见的先后顺序：</b>应急金 → 保障 → 长期稳健储备 → 增值投资。具体比例因家庭而异，没有标准答案。</p></div>
+  <div class="foot"><span>四账户思路为通用理财框架，非产品推荐</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>20–22′。</b>强调“保障型”和“储蓄型”在这张图里是两个不同的位置，目的不同、规则不同，不能混为一谈。这页是后面两个部分的目录。</p></aside></div>
+
+<!-- 12 预算 -->
+<div class="slotwrap"><section class="slide" id="s12">
+  <div class="kicker">第二部分 · 家庭财务安全地图 <span>· 量力而行</span></div>
+  <h2>三条不会让你后悔的底线</h2>
+  <div class="c3">
+    <div class="card"><div class="big">先留 3–6 个月</div><p>日常开支作为应急金。没有应急金就把钱锁进长期产品，是最常见的遗憾。</p></div>
+    <div class="card gold"><div class="big">占比有上限</div><p>保险保费总和建议不超过家庭年收入的 10% 左右（参考值），不能影响正常生活。</p></div>
+    <div class="card warm"><div class="big">不借钱买保险</div><p>不为了“返还”“收益”去借钱或动用救命钱。需要长期坚持的产品，必须是稳定现金流能承担的。</p></div>
+  </div>
+  <p class="lead">安全感来自“能坚持”，不是“买得多”。</p>
+  <div class="foot"><span>比例为常见参考，不是规定</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>22–23′。</b>主动给自己设置上限，会显得克制与可信。后面再讲产品时，所有建议都落在这三条底线之内。</p></aside></div>
+
+<!-- 13 保障型总览 -->
+<div class="slotwrap"><section class="slide" id="s13">
+  <div class="kicker">第三部分 · 保障型产品 <span>· 14 分钟</span></div>
+  <h2>保障型保险：用一小笔钱，转移一大笔风险</h2>
+  <div class="tscroll"><table>
+    <thead><tr><th style="width:16%">类型</th><th style="width:30%">解决什么问题</th><th style="width:27%">适合先考虑的人</th><th style="width:27%">重点看什么</th></tr></thead>
+    <tbody>
+      <tr><td>医疗险</td><td>住院医疗费用的补充，覆盖医保报销之外的部分。</td><td>全家成员，孩子和大人都适用。</td><td>免赔额、报销范围、是否保证续保。</td></tr>
+      <tr><td>重疾险</td><td>确诊约定疾病后一次性给付，补偿收入中断和康复费用。</td><td>家庭收入支柱，以及有需要的孩子。</td><td>疾病定义、轻中症、保障期限、保额。</td></tr>
+      <tr><td>意外险</td><td>因意外导致身故、伤残或医疗费用。</td><td>所有人，成本相对低。</td><td>意外医疗、伤残赔付比例、免责范围。</td></tr>
+      <tr><td>定期寿险</td><td>家庭支柱不幸身故或全残时，给家人留下稳定的经济来源。</td><td>有房贷、孩子尚小的父母。</td><td>保额是否覆盖负债+养育，保障期限。</td></tr>
+    </tbody></table></div>
+  <p class="muted small">它们的共同点：不返还或返还有限，价值在“出事时能顶用”，平时看不见。这就像家里的灭火器。</p>
+  <div class="foot"><span>产品责任以保险合同条款为准</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>23–26′。</b>用“灭火器”类比：希望永远用不上，但放在那里让人安心。避免使用“出事了怎么办”式的恐吓语气。</p></aside></div>
+
+<!-- 14 宝宝 -->
+<div class="slotwrap"><section class="slide" id="s14">
+  <div class="kicker">第三部分 · 保障型产品 <span>· 给宝宝</span></div>
+  <h2>给新生儿准备保障，有五个实用提醒</h2>
+  <div class="c2">
+    <div class="card"><h3>1 · 先确认医保</h3><p>在规定时限内办理新生儿参保登记，这是最基础、也最划算的一层。</p></div>
+    <div class="card"><h3>2 · 关注“可投保时间”</h3><p>不少商业产品要求出生满 28–30 天后才能投保，具体看各产品规定。</p></div>
+    <div class="card gold"><h3>3 · 如实告知</h3><p>早产、低体重、出生后住院或黄疸治疗等情况需要如实说明，可能影响核保结果。</p></div>
+    <div class="card"><h3>4 · 先天疾病通常是限制项</h3><p>先天性、遗传性疾病和出生前已存在的情况，常被列为责任免除或限制，请读清条款。</p></div>
+  </div>
+  <p class="lead small">5 · 在保障孩子之前，先确认父母自己已经有了保障。</p>
+  <div class="foot"><span>投保条件以各保险公司产品为准</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>26–29′。</b>不提具体产品，不说“某某公司的某某产品很好”。如果有人追问，请回复：“这个可以在课后私下聊，我先帮您列出要比较的几点。”</p></aside></div>
+
+<!-- 15 妈妈 -->
+<div class="slotwrap"><section class="slide" id="s15">
+  <div class="kicker">第三部分 · 保障型产品 <span>· 给妈妈</span></div>
+  <h2>产后的妈妈，保障需要“看时机”</h2>
+  <div class="c2">
+    <div class="card"><h3>孕期与刚生产后</h3><p>多数商业医疗险、重疾险对孕期、产后短期投保较严格：可能延期、加费，或对妊娠相关情况设置除外。具体看各产品规则。</p></div>
+    <div class="card"><h3>恢复后再规划</h3><p>身体恢复、产后复查结果正常后，核保通常更顺利。不必在月子期间着急做决定。</p></div>
+    <div class="card warm"><h3>意外险</h3><p>相对容易投保，覆盖日常生活意外，价格不高，是很多妈妈最先补上的一层。</p></div>
+    <div class="card gold"><h3>别忘了“收入保障”</h3><p>妈妈如果有工作收入，重疾与寿险的作用，是在收入中断时让家庭仍能运转。</p></div>
+  </div>
+  <div class="foot"><span>投保规则以各保险公司核保规定为准</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>29–31′。</b>“不必在月子期间着急做决定”这句话是整场的信任支点，请真诚地讲出来。</p></aside></div>
+
+<!-- 16 支柱 -->
+<div class="slotwrap"><section class="slide" id="s16">
+  <div class="kicker">第三部分 · 保障型产品 <span>· 给家庭支柱</span></div>
+  <h2>“先大人，后孩子”背后的道理</h2>
+  <div class="c2">
+    <div class="card"><h3>孩子最大的保障，是父母</h3><p>孩子的生活、教育、成长，依靠父母的收入与健康。父母出现风险，对孩子的影响远大于孩子自己的医疗费用。</p></div>
+    <div class="card gold"><h3>保额怎么估</h3><ul><li>家庭负债（房贷、车贷）</li><li>养育孩子到独立的基本费用</li><li>家人若干年的生活开支</li><li>减去：已有资产和已有保障</li></ul></div>
+  </div>
+  <div class="card plain"><p>更直观的问法：<b>“如果我 / 伴侣 3 年没有收入，这个家还能撑多久？”</b>答案不够理想，才是需要补缺口的地方。</p></div>
+  <div class="foot"><span>保额估算仅为思路示例，需结合家庭实际</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>31–33′。</b>这是行业内最常见的建议，但请避免施压。可以说：“这不是让您马上买，而是回家和伴侣一起想一想。”</p></aside></div>
+
+<!-- 17 条款 -->
+<div class="slotwrap"><section class="slide" id="s17">
+  <div class="kicker">第三部分 · 保障型产品 <span>· 读懂合同</span></div>
+  <h2>读懂保险合同的 6 个关键词</h2>
+  <div class="c3">
+    <div class="card"><h3>等待期</h3><p>投保后一段时间内出险不赔。医疗、重疾常见为 30–180 天，意外险一般没有。</p></div>
+    <div class="card"><h3>免赔额</h3><p>医疗险里先由自己承担的那部分，常见为 1 万元左右，因产品而异。</p></div>
+    <div class="card warm"><h3>健康告知</h3><p>投保时按问询如实回答。告知不实可能影响理赔，这是最重要的一条。</p></div>
+    <div class="card"><h3>责任免除</h3><p>合同里“不赔”的情形，务必阅读，很多纠纷都出在这里。</p></div>
+    <div class="card"><h3>续保条件</h3><p>是否保证续保、期限多长。尤其是医疗险，续保规则很重要。</p></div>
+    <div class="card gold"><h3>犹豫期</h3><p>收到合同后的一段时间内可以无损失退保，具体天数以合同为准，要用好这个权利。</p></div>
+  </div>
+  <div class="foot"><span>具体数值以所购产品合同约定为准</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>33–35′。</b>这一页也是最“有用”的页，请放进手册。顺带强调：看不懂就问，问十遍也不丢人，不要因为不好意思而闷着头签字。</p></aside></div>
+
+<!-- 18 情景 -->
+<div class="slotwrap"><section class="slide" id="s18">
+  <div class="kicker">第三部分 · 保障型产品 <span>· 三个常见情景</span></div>
+  <h2>保障型产品，在真实生活里怎么起作用</h2>
+  <div class="c3">
+    <div class="card"><h3>情景一 · 宝宝住院</h3><p>新生儿因感染或黄疸住院几天。医保报销后，仍有自费药、陪护、营养品等开销。医疗险补的是这一层。</p></div>
+    <div class="card gold"><h3>情景二 · 妈妈生病</h3><p>产后妈妈需要休养或治疗，工作暂停数月。重疾险给付的钱，补的是“收入中断”这一层。</p></div>
+    <div class="card warm"><h3>情景三 · 家庭支柱不幸</h3><p>如果房贷和孩子的教育费用尚未完成，定期寿险让家人不被迫变卖房子或中断孩子学业。</p></div>
+  </div>
+  <p class="muted small">以上为说明性的情景，不代表任何真实案例或理赔金额。每个家庭的情况不同。</p>
+  <div class="foot"><span>情景仅为示意，不构成理赔承诺</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>35–37′。</b>不要讲具体的理赔大数字故事，也不要讲“邻居家的真实悲剧”。克制，是长期信任的基础。</p></aside></div>
+
+<!-- 19 储蓄型 -->
+<div class="slotwrap"><section class="slide" id="s19">
+  <div class="kicker">第四部分 · 储蓄型产品 <span>· 11 分钟</span></div>
+  <h2>储蓄型保险：长期、确定、专款专用</h2>
+  <div class="c2">
+    <div class="card"><h3>它是什么</h3><p>投保人按约定缴费，合同约定在未来某个时间点或长期，给付一定金额，同时带有身故或全残保障。</p>
+    <p class="muted small" style="margin-top:8px">常见类型：增额终身寿险、年金保险、教育金（两全）保险、分红型保险。</p></div>
+    <div class="card gold"><h3>它不是什么</h3><ul><li>不是短期理财，也不是“存款替代品”</li><li>不是保障型的替代，二者目的不同</li><li>不是收益越高越好，要看哪些是“写进合同的”</li></ul></div>
+  </div>
+  <div class="card plain"><p><b>一句话：</b>把一部分<b>确定要用</b>且<b>十年内不会动</b>的钱，锁进一个有约定的“专用账户”。</p></div>
+  <div class="foot"><span>产品责任以保险合同条款为准</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>37–40′。</b>先讲“它不是什么”，会让听众觉得你比她们更谨慎。这是整场中最能让人放下防备的内容之一。</p></aside></div>
+
+<!-- 20 适合 -->
+<div class="slotwrap"><section class="slide" id="s20">
+  <div class="kicker">第四部分 · 储蓄型产品 <span>· 适合谁</span></div>
+  <h2>什么情况下适合，什么情况下再等等</h2>
+  <div class="c2">
+    <div class="card"><span class="tag">更适合</span><ul><li>应急金和保障型产品已经安排好</li><li>目标明确，如教育金、养老金，时间点已知</li><li>现金流稳定，十年以上不会动这笔钱</li><li>更看重“确定”，不追求最高收益</li></ul></div>
+    <div class="card warm"><span class="tag warm">先等等</span><ul><li>手里的钱可能 3–5 年内要用</li><li>还没有应急金，或保障有明显缺口</li><li>需要靠借钱或动用救命钱来缴费</li><li>主要想追求高收益，不接受锁定</li></ul></div>
+  </div>
+  <p class="lead">“可以不买”“晚一点买”，常常也是正确的决定。</p>
+  <div class="foot"><span>科普分享，不构成投保建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>40–42′。</b>不必遮掩“先等等”这一列。真正想做长期规划的家庭，会因此更愿意联系你。</p></aside></div>
+
+<!-- 21 图 -->
+<div class="slotwrap"><section class="slide" id="s21">
+  <div class="kicker">第四部分 · 储蓄型产品 <span>· 最该理解的一张图</span></div>
+  <h2>现金价值：早期退保，拿回的往往少于已交的钱</h2>
+  <div class="c2" style="grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:center">
+    <svg class="chart" viewBox="0 0 520 290" role="img" aria-label="示意图：已交保费累计线与现金价值曲线，前期现金价值低于已交保费，约第 14 年后超过">
+      <g class="gridl"><line x1="50" y1="240" x2="500" y2="240" class="ax"/><line x1="50" y1="20" x2="50" y2="240" class="ax"/>
+      <line x1="50" y1="130" x2="500" y2="130" class="gridl"/><line x1="50" y1="185" x2="500" y2="185" class="gridl"/></g>
+      <polyline fill="none" stroke="#C9573F" stroke-width="3" stroke-dasharray="7 5" points="50,240 200,102 500,102" style="stroke:var(--warm)"/>
+      <polyline fill="none" stroke="#1D6B66" stroke-width="3.5" stroke-linejoin="round" points="50,240 85,226 125,198 160,164 200,128 230,114 260,102 305,86 350,70 420,48 500,26" style="stroke:var(--accent)"/>
+      <text x="58" y="56" style="fill:var(--warm)">早期退保，拿回的钱</text><text x="58" y="74" style="fill:var(--warm)">少于已交保费</text>
+      <circle cx="260" cy="102" r="5" style="fill:var(--accent)"/>
+      <text x="262" y="142">约第 14 年，两线相交</text>
+      <text x="300" y="122" style="fill:var(--warm)">累计已交保费（10 年缴清）</text>
+      <text x="400" y="80" style="fill:var(--accent)">现金价值</text>
+      <text x="50" y="262" class="muted">第 0 年</text><text x="175" y="262" class="muted">第 10 年</text><text x="320" y="262" class="muted">第 20 年</text><text x="460" y="262" class="muted">第 30 年</text>
+      <text x="50" y="282" class="muted">示意图：用于说明规律，不对应任何真实产品或金额</text>
+    </svg>
+    <div class="card gold"><h3>读懂它的三句话</h3><ul><li>现金价值是退保时能拿回的钱，早期通常低于已交保费。</li><li>时间越长，对持有人越有利。</li><li>所以只适合放“十年内不动”的钱。</li></ul></div>
+  </div>
+  <div class="foot"><span>示意图，具体数值请以产品合同的现金价值表为准</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>42–44′。</b>这是整场最重要的“反推销”页：主动告诉对方储蓄险的主要缺点。讲完后可以问一句：“如果您手里的钱五年内可能要用，会选这类产品吗？”让对方自己得出结论。</p></aside></div>
+
+<!-- 22 保证 -->
+<div class="slotwrap"><section class="slide" id="s22">
+  <div class="kicker">第四部分 · 储蓄型产品 <span>· 保证与非保证</span></div>
+  <h2>看收益，先分清“写进合同的”和“可能有的”</h2>
+  <div class="c2">
+    <div class="card"><span class="tag">保证部分</span><h3>合同里白纸黑字</h3><p>合同约定的保额、现金价值、给付金额，保险公司必须按约定履行。</p></div>
+    <div class="card warm"><span class="tag warm">非保证部分</span><h3>可能有，也可能没有</h3><p>分红险的红利、万能险的结算利率，取决于公司经营和市场，演示数字不是承诺。</p></div>
+  </div>
+  <div class="c3">
+    <div class="card plain"><h3>利率受监管</h3><p>监管对产品的预定利率设有上限，近年多次调整，请以最新规定和产品条款为准。</p></div>
+    <div class="card plain"><h3>锁定的是什么</h3><p>确定型产品锁定的是合同利率，对比的是同期的存款与理财，而不是“最高演示收益”。</p></div>
+    <div class="card plain"><h3>选正规公司</h3><p>确认持牌经营，可查看公司公开披露的偿付能力报告。</p></div>
+  </div>
+  <div class="foot"><span>监管规定以金融监管部门最新公告为准</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>44–46′。</b>不要给出任何具体利率或“年化收益”数字，包括口头。如果对方问“收益大概多少”，回答：“要看具体产品合同的保证部分，我课后帮您把‘保证’和‘演示’分开列出来。”</p></aside></div>
+
+<!-- 23 对比 -->
+<div class="slotwrap"><section class="slide" id="s23">
+  <div class="kicker">第四部分 · 储蓄型产品 <span>· 放在更大的图里看</span></div>
+  <h2>储蓄型保险与其他方式，各有分工</h2>
+  <div class="tscroll"><table>
+    <thead><tr><th style="width:20%">方式</th><th style="width:22%">流动性</th><th style="width:28%">收益确定性</th><th style="width:30%">更适合承担的角色</th></tr></thead>
+    <tbody>
+      <tr><td>活期 / 货币类</td><td>高，随时可用</td><td>收益低但稳定</td><td>应急金、日常周转</td></tr>
+      <tr><td>银行定期</td><td>中，约定期限</td><td>合同期内确定</td><td>中短期确定的支出</td></tr>
+      <tr><td>储蓄型保险</td><td>低，长期持有</td><td>保证部分确定，带有身故保障</td><td>长期、专款专用的教育与养老</td></tr>
+      <tr><td>基金 / 投资</td><td>较高，可赎回</td><td>不确定，可能亏损</td><td>能承受波动的增值资金</td></tr>
+    </tbody></table></div>
+  <p class="muted small">没有“最好”的工具，只有“放在合适位置”的工具。</p>
+  <div class="foot"><span>定性比较，不构成任何产品推荐</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>46–47′。</b>不要贬低银行、基金，也不要贬低同行。用“分工”替代“比较高低”。</p></aside></div>
+
+<!-- 24 避坑 -->
+<div class="slotwrap"><section class="slide" id="s24">
+  <div class="kicker">第四部分 · 储蓄型产品 <span>· 避坑清单</span></div>
+  <h2>遇到这六种说法，请先停一停</h2>
+  <div class="c2">
+    <div class="card warm"><h3>“收益比存款高很多”</h3><p>请对方指出<b>合同里保证</b>的部分是多少。</p></div>
+    <div class="card warm"><h3>“今天不买就涨价 / 下架”</h3><p>好的长期规划不会被一天的时间卡住。</p></div>
+    <div class="card warm"><h3>“把银行的钱转过来”</h3><p>短期要用的钱不应锁入长期产品。</p></div>
+    <div class="card warm"><h3>“不用看条款，我给您讲”</h3><p>以合同为准，口头承诺不具备效力。</p></div>
+    <div class="card warm"><h3>“这是理财，不是保险”</h3><p>储蓄型保险就是保险，要明白它的缴费期、现金价值与退保规则。</p></div>
+    <div class="card warm"><h3>“先交钱，细节回头再说”</h3><p>先读完合同、用完犹豫期，再决定是否继续。</p></div>
+  </div>
+  <p class="small muted">这份清单对任何销售人员都适用，包括今天的我。欢迎你用它来检验。</p>
+  <div class="foot"><span>投保前请阅读合同与产品说明书</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>47–48′。</b>“包括今天的我”是点睛之笔，请自然地说出来，不要刻意。它向听众证明你愿意被检验。</p></aside></div>
+
+<!-- 25 五步 -->
+<div class="slotwrap"><section class="slide" id="s25">
+  <div class="kicker">第五部分 · 行动清单 <span>· 4 分钟</span></div>
+  <h2>做出好决定的五步，没有一步需要今天完成</h2>
+  <div class="c4" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+    <div class="card"><span class="tag">盘点</span><p>已有医保、单位福利和商业保单</p></div>
+    <div class="card"><span class="tag">估算</span><p>每月收支，留足 3–6 个月应急金</p></div>
+    <div class="card"><span class="tag">排序</span><p>先保障，后长期储备，再增值</p></div>
+    <div class="card gold"><span class="tag gold">阅读</span><p>条款、免责、健康告知、现金价值表</p></div>
+    <div class="card warm"><span class="tag warm">慢决定</span><p>与家人商量，用足犹豫期，多比较</p></div>
+  </div>
+  <p class="lead">任何一步，都可以自己做；觉得需要人帮忙核对时，再去找人。</p>
+  <div class="foot"><span>科普分享，不构成投保建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>48–50′。</b>语速放慢，进入收尾节奏。</p></aside></div>
+
+<!-- 26 自查 -->
+<div class="slotwrap"><section class="slide" id="s26">
+  <div class="kicker">第五部分 · 行动清单 <span>· 家庭安全感自查表</span></div>
+  <h2>回头看看，这十件事你家做到几件</h2>
+  <ul class="check" id="checklist">
+    <li><label><input type="checkbox" data-k="1"> 宝宝已按时限办理医保参保登记</label></li>
+    <li><label><input type="checkbox" data-k="2"> 家里至少有 3 个月生活开支的应急金</label></li>
+    <li><label><input type="checkbox" data-k="3"> 汽车安全座椅已安装并复核</label></li>
+    <li><label><input type="checkbox" data-k="4"> 全家人知道新生儿危险信号与就医电话</label></li>
+    <li><label><input type="checkbox" data-k="5"> 已确认夫妻双方各自的社保与医保状态</label></li>
+    <li><label><input type="checkbox" data-k="6"> 已整理现有保单：保额、期限、受益人</label></li>
+    <li><label><input type="checkbox" data-k="7"> 妈妈已预约产后 42 天复查</label></li>
+    <li><label><input type="checkbox" data-k="8"> 家人对妈妈的情绪状态有定期关心</label></li>
+    <li><label><input type="checkbox" data-k="9"> 清楚家庭每年保费占收入的比例</label></li>
+    <li><label><input type="checkbox" data-k="10"> 大额决定都和家人商量后再定</label></li>
+  </ul>
+  <div class="card plain"><p><b id="score">0 / 10</b>　勾选结果只保存在你自己的浏览器里，不会被上传。没做到的，就是接下来几个月可以慢慢补的事。</p></div>
+  <div class="foot"><span>纸质版见下载手册</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>50–52′。</b>发放纸质自查表，请听众现场勾选，不必收回。这是她们带走的、最能提醒她们想起你的“礼物”。</p></aside></div>
+
+<!-- 27 Q&A -->
+<div class="slotwrap"><section class="slide" id="s27">
+  <div class="kicker">答疑 <span>· 大家常问的六个问题</span></div>
+  <h2>常见疑问，坦率回答</h2>
+  <div class="c2">
+    <div class="card"><h3>孩子这么小，有必要吗？</h3><p>医保是基础。商业保障不是“必须”，取决于家庭预算和风险偏好。可以先从父母开始。</p></div>
+    <div class="card"><h3>已经有医保，还要吗？</h3><p>医保解决基础，自费部分和收入中断仍由家庭承担。要不要补，看这部分你能不能承受。</p></div>
+    <div class="card"><h3>怎么判断对方靠不靠谱？</h3><p>核验从业人员执业资质、所属公司是否持牌；要求提供条款全文；不接受口头承诺。</p></div>
+    <div class="card"><h3>买了不合适，能退吗？</h3><p>在犹豫期内可无损失退保；超过后退保可能产生损失，要看现金价值表。</p></div>
+    <div class="card"><h3>月子中心会从中获利吗？</h3><p>请向中心直接询问并获得明确答复。今天的分享不收取任何费用，也不要求购买。</p></div>
+    <div class="card"><h3>我的健康情况不好怎么办？</h3><p>请如实告知。可能被拒保、加费或除外，也可以考虑普惠型产品或多种方案。</p></div>
+  </div>
+  <div class="foot"><span>科普分享，不构成投保建议</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>52–58′。</b>每个问题先回答，再问对方“这样说清楚吗”。遇到敏感问题（健康状况、赔付）建议课后一对一，不在大场合展开。若有人在场质疑销售，请先感谢提问，再回应。</p></aside></div>
+
+<!-- 28 建联 -->
+<div class="slotwrap"><section class="slide" id="s28">
+  <div class="kicker">结束 <span>· 带走的、与愿意再聊的</span></div>
+  <h2>今天就到这里，下面三种方式，选哪种都可以</h2>
+  <div class="c3">
+    <div class="card"><span class="tag">A · 什么都不做</span><h3>带走手册就好</h3><p>手册里有今天的全部要点、安全睡眠贴士和自查表。不用留任何信息。</p></div>
+    <div class="card gold"><span class="tag gold">B · 偶尔看科普</span><h3>新生家庭知识小站</h3><p>扫码进入。每周最多一篇母婴或家庭财务科普，可随时退出。【此处放二维码】</p></div>
+    <div class="card warm"><span class="tag warm">C · 想让人帮看看</span><h3>20 分钟保障盘点</h3><p>预约后，只帮你梳理现有保障，不推荐产品，不当场签任何东西。【此处放预约方式】</p></div>
+  </div>
+  <div class="card plain"><p><b>我的承诺：</b>不打骚扰电话；不在群里发广告；不转交你的信息；任何时候说停，我就停。</p></div>
+  <div class="foot"><span>【讲师姓名 · 机构 · 执业证编号】</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>58–60′。</b>三个选项必须同等清晰，A 选项不能被弱化，这是信任所在。收尾话术：“谢谢大家这一小时。今天最重要的一件事，是回家后和家人一起看看那张自查表。”不要在散场时追着人加微信。</p></aside></div>
+
+<!-- 29 声明 -->
+<div class="slotwrap"><section class="slide" id="s29">
+  <div class="kicker">说明 <span>· 请务必阅读</span></div>
+  <h2>风险提示与内容声明</h2>
+  <ul>
+    <li>本资料为面向新生儿家庭的保险与健康<b>科普</b>内容，不构成要约、投保建议或理财建议。</li>
+    <li>保险产品的保障范围、等待期、免责条款、费用、现金价值和给付，均以<b>保险合同条款</b>及产品说明书为准。</li>
+    <li>投保前应如实履行健康告知义务；不如实告知可能影响保险责任。</li>
+    <li>储蓄型保险属长期合同，提前退保可能产生损失；分红、万能账户收益具有不确定性，不构成保证。</li>
+    <li>图表与情景均为说明性示意，不对应真实产品、真实案例或收益承诺。</li>
+    <li>母婴健康内容为一般性科普，不能替代医生的诊断与治疗。出现异常请及时就医。</li>
+    <li>法规、医保政策、产品规则会随时间调整，请以最新官方信息为准。</li>
+  </ul>
+  <div class="foot"><span>【机构名称 · 执业资质信息】</span><span class="pg"></span></div>
+</section>
+<aside class="notes"><p><b>备用页。</b>该页可在开场或结束时一并展示，不需要宣读。讲师在正式使用前，请替换页面中所有【】占位信息，并按所在公司的合规要求审核全部内容。</p></aside></div>
+
+</main>
+
+<div class="navhint" id="navhint"><button type="button" id="prev" aria-label="上一页">‹ 上一页</button><button type="button" id="next" aria-label="下一页">下一页 ›</button><button type="button" id="exit">退出</button></div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var wraps=[].slice.call(document.querySelectorAll('.slotwrap'));
+  var slides=wraps.map(function(w){return w.querySelector('.slide');});
+  slides.forEach(function(s,i){var p=s.querySelector('.pg'); if(p) p.textContent=(i+1)+' / '+slides.length;});
+  var idx=0;
+
+  /* 讲师备注 */
+  var bn=document.getElementById('btnNotes');
+  bn.addEventListener('click',function(){
+    var on=document.body.classList.toggle('show-notes'); bn.setAttribute('aria-pressed',on?'true':'false');
+  });
+
+  /* 演示模式 */
+  function fit(){
+    var s=slides[idx]; var k=Math.min(innerWidth/1280,innerHeight/720);
+    s.style.transform='translate(-50%,-50%) scale('+k+')';
+  }
+  function show(i){
+    idx=Math.max(0,Math.min(slides.length-1,i));
+    wraps.forEach(function(w,j){w.classList.toggle('active',j===idx);});
+    fit();
+    try{history.replaceState(null,'','#s'+(idx+1));}catch(e){}
+  }
+  function enter(){
+    var m=location.hash.match(/^#s(\d+)$/); var start=m?(+m[1]-1):0;
+    var cur=slides.findIndex(function(s){var r=s.getBoundingClientRect();return r.bottom>120;});
+    root.classList.add('present','fixed'); show(m?start:(cur<0?0:cur));
+  }
+  function exit(){
+    root.classList.remove('present','fixed'); slides.forEach(function(s){s.style.transform='';});
+    wraps.forEach(function(w){w.classList.remove('active');});
+    slides[idx].scrollIntoView();
+  }
+  document.getElementById('btnPresent').addEventListener('click',enter);
+  document.getElementById('exit').addEventListener('click',exit);
+  document.getElementById('prev').addEventListener('click',function(){show(idx-1);});
+  document.getElementById('next').addEventListener('click',function(){show(idx+1);});
+  addEventListener('resize',function(){if(root.classList.contains('present'))fit();});
+  addEventListener('keydown',function(e){
+    if(!root.classList.contains('present'))return;
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();show(idx+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(idx-1);}
+    else if(e.key==='Escape'){exit();}
+  });
+
+  /* 自查表（仅保存在本机浏览器） */
+  var boxes=[].slice.call(document.querySelectorAll('#checklist input'));
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem('xsr-check')||'{}');}catch(e){}
+  function upd(){document.getElementById('score').textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length;}
+  boxes.forEach(function(b){
+    b.checked=!!saved[b.dataset.k];
+    b.addEventListener('change',function(){
+      saved[b.dataset.k]=b.checked; try{localStorage.setItem('xsr-check',JSON.stringify(saved));}catch(e){} upd();
+    });
+  });
+  upd();
+})();
+</script>
