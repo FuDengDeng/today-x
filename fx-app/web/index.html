@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0b1a9e">
+<title>汇比比 · 换汇比价</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ 汇率页 ============ -->
+  <section class="page" id="page-rate">
+    <header class="hero">
+      <div class="hero-text">
+        <h1>汇比比</h1>
+        <p>帮你找到最划算的换汇银行</p>
+      </div>
+      <svg class="globe" viewBox="0 0 200 200" aria-hidden="true">
+        <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.2">
+          <circle cx="100" cy="100" r="90"/>
+          <ellipse cx="100" cy="100" rx="90" ry="34"/>
+          <ellipse cx="100" cy="100" rx="90" ry="66"/>
+          <ellipse cx="100" cy="100" rx="34" ry="90"/>
+          <ellipse cx="100" cy="100" rx="66" ry="90"/>
+          <line x1="10" y1="100" x2="190" y2="100"/>
+          <line x1="100" y1="10" x2="100" y2="190"/>
+        </g>
+      </svg>
+    </header>
+
+    <nav class="card ccy-grid" id="ccyGrid"></nav>
+
+    <div class="card parity" id="parity" hidden>
+      <span class="parity-label">央行中间价</span>
+      <span class="parity-val" id="parityVal">—</span>
+      <span class="parity-date" id="parityDate"></span>
+    </div>
+
+    <div class="card board">
+      <div class="toggles">
+        <label class="tg"><span data-k="region" data-v="mainland" class="tg-l on">内地</span>
+          <button class="switch" id="swRegion" role="switch" aria-checked="false" aria-label="内地/香港"></button>
+          <span data-k="region" data-v="hk" class="tg-r">香港</span></label>
+        <label class="tg"><span class="tg-l on">现汇</span>
+          <button class="switch" id="swChannel" role="switch" aria-checked="false" aria-label="现汇/现钞"></button>
+          <span class="tg-r">现钞</span></label>
+      </div>
+      <div class="thead">
+        <span class="th-name">客户视角</span>
+        <button class="th-sort" data-col="buy">购汇<i class="sort"></i></button>
+        <button class="th-sort" data-col="sell">结汇<i class="sort"></i></button>
+      </div>
+      <ul class="rows" id="rows"><li class="loading">加载中…</li></ul>
+      <p class="meta" id="meta"></p>
+    </div>
+
+    <p class="disclaimer">牌价为各银行公示价，仅供参考，实际成交以银行柜台/手机银行为准。标注「示例」的银行暂未接入实时数据。单位：人民币元 / 100 外币。</p>
+
+    <button class="fab" id="fab" aria-label="算一算">
+      <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2fa8ff"/>
+        <rect x="14" y="11" width="20" height="26" rx="3" fill="#fff"/>
+        <rect x="17" y="14" width="14" height="6" rx="1.5" fill="#2fa8ff"/>
+        <g fill="#0b1a9e"><circle cx="19" cy="25" r="1.8"/><circle cx="24" cy="25" r="1.8"/><circle cx="29" cy="25" r="1.8"/>
+        <circle cx="19" cy="31" r="1.8"/><circle cx="24" cy="31" r="1.8"/><circle cx="29" cy="31" r="1.8"/></g></svg>
+      <span>算一算</span>
+    </button>
+  </section>
+
+  <!-- ============ 我的 ============ -->
+  <section class="page" id="page-mine" hidden>
+    <header class="hero hero-sm"><div class="hero-text"><h1 class="h-sm">我的</h1></div></header>
+    <div class="card profile">
+      <div class="avatar">微</div>
+      <div><b>未登录</b><p class="muted">在微信小程序内可一键登录，用于汇率提醒、收藏</p></div>
+      <button class="btn" id="loginBtn">微信登录</button>
+    </div>
+    <div class="card list">
+      <div class="list-title">数据源接入状态 <span class="muted" id="srcCount"></span></div>
+      <ul id="srcList"></ul>
+      <p class="legend"><i class="dot live"></i>已接入实时 <i class="dot red"></i>未接入（显示示例数据）</p>
+    </div>
+    <div class="card list">
+      <div class="list-item">缓存策略 <span class="muted">工作日 8:00–23:30 每 60 秒；其余 15 分钟；中间价每日 9:15 后</span></div>
+      <div class="list-item">免责声明 <span class="muted">本应用不提供换汇交易</span></div>
+      <div class="list-item">版本 <span class="muted">H5 原型 v0.1</span></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-soon" hidden>
+    <header class="hero hero-sm"><div class="hero-text"><h1 class="h-sm" id="soonTitle"></h1></div></header>
+    <div class="card empty"><p>该模块规划于后续版本</p><p class="muted">MVP 聚焦汇率比价</p></div>
+  </section>
+
+  <!-- ============ 底部 Tab ============ -->
+  <nav class="tabbar">
+    <button data-tab="gold"><svg viewBox="0 0 24 24"><path d="M4 18h16M6 18l2-6h8l2 6M9 12l1-4h4l1 4M12 3v2M7 5l1 1.5M17 5l-1 1.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>黄金</button>
+    <button data-tab="rate-interest"><svg viewBox="0 0 24 24"><text x="12" y="18" text-anchor="middle" font-size="18" font-weight="700" fill="currentColor">$</text></svg>利率</button>
+    <button data-tab="rate" class="on"><svg viewBox="0 0 24 24"><text x="12" y="19" text-anchor="middle" font-size="20" font-weight="700" fill="currentColor">¥</text></svg>汇率</button>
+    <button data-tab="tips"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>经验</button>
+    <button data-tab="mine"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 21c1-4.5 4.5-6 8-6s7 1.5 8 6z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>我的</button>
+  </nav>
+
+  <!-- ============ 弹层 ============ -->
+  <div class="mask" id="mask" hidden></div>
+
+  <div class="sheet" id="moreSheet" hidden>
+    <div class="sheet-hd">更多币种<button class="x" data-close>×</button></div>
+    <div class="more-grid" id="moreGrid"></div>
+  </div>
+
+  <div class="sheet" id="calcSheet" hidden>
+    <div class="sheet-hd">算一算<button class="x" data-close>×</button></div>
+    <div class="seg" id="calcDir">
+      <button data-v="buy" class="on">购汇（人民币→外币）</button>
+      <button data-v="sell">结汇（外币→人民币）</button>
+    </div>
+    <label class="field"><span id="calcInLabel">我想换</span>
+      <input id="calcAmt" type="number" inputmode="decimal" value="10000" min="0">
+      <em id="calcInUnit">美元</em></label>
+    <label class="field"><span>银行</span>
+      <select id="calcBank"></select></label>
+    <div class="result">
+      <div class="res-main"><span id="calcOutLabel">需支付人民币</span><b id="calcOut">—</b></div>
+      <div class="res-sub" id="calcSave"></div>
+    </div>
+    <p class="muted small">按所选银行公示牌价估算，实际以银行成交为准。</p>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

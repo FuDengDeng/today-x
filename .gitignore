@@ -23,3 +23,5 @@ Thumbs.db
 # Project specific
 xrss/
 cookies.json
+__pycache__/
+.pytest_cache/
