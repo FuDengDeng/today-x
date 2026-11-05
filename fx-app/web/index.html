@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#0b1a9e">
+<meta name="theme-color" content="#c8102e">
 <title>汇率宝 · 换汇比价</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -13,22 +13,12 @@
   <!-- ============ 汇率页 ============ -->
   <section class="page" id="page-rate">
     <header class="hero">
+      <div class="brand"><i class="mark" aria-hidden="true"></i><span>汇率宝</span></div>
       <div class="hero-text">
-        <h1>汇率宝</h1>
-        <p>帮你找到最划算的换汇银行</p>
+        <h1>今天在哪家银行换汇最划算</h1>
+        <p>29 家银行公示牌价 · 购汇结汇一键比价</p>
       </div>
-      <svg class="globe" viewBox="0 0 200 200" aria-hidden="true">
-        <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.2">
-          <circle cx="100" cy="100" r="90"/>
-          <ellipse cx="100" cy="100" rx="90" ry="34"/>
-          <ellipse cx="100" cy="100" rx="90" ry="66"/>
-          <ellipse cx="100" cy="100" rx="34" ry="90"/>
-          <ellipse cx="100" cy="100" rx="66" ry="90"/>
-          <line x1="10" y1="100" x2="190" y2="100"/>
-          <line x1="100" y1="10" x2="100" y2="190"/>
-        </g>
-      </svg>
-    </header>
+          </header>
 
     <nav class="card ccy-grid" id="ccyGrid"></nav>
 
@@ -59,11 +49,11 @@
     <p class="disclaimer">牌价为各银行公示价，仅供参考，实际成交以银行柜台/手机银行为准。标注「示例」的银行暂未接入实时数据。单位：人民币元 / 100 外币。</p>
 
     <button class="fab" id="fab" aria-label="算一算">
-      <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2fa8ff"/>
-        <rect x="14" y="11" width="20" height="26" rx="3" fill="#fff"/>
-        <rect x="17" y="14" width="14" height="6" rx="1.5" fill="#2fa8ff"/>
-        <g fill="#0b1a9e"><circle cx="19" cy="25" r="1.8"/><circle cx="24" cy="25" r="1.8"/><circle cx="29" cy="25" r="1.8"/>
-        <circle cx="19" cy="31" r="1.8"/><circle cx="24" cy="31" r="1.8"/><circle cx="29" cy="31" r="1.8"/></g></svg>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#c8102e"/>
+        <rect x="15" y="11" width="18" height="26" rx="2" fill="none" stroke="#fff" stroke-width="2"/>
+        <rect x="18" y="14.5" width="12" height="5" fill="#fff"/>
+        <g fill="#fff"><rect x="18" y="23" width="3" height="3"/><rect x="22.5" y="23" width="3" height="3"/><rect x="27" y="23" width="3" height="3"/>
+        <rect x="18" y="29" width="3" height="3"/><rect x="22.5" y="29" width="3" height="3"/><rect x="27" y="29" width="3" height="3"/></g></svg>
       <span>算一算</span>
     </button>
   </section>

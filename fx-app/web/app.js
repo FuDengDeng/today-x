@@ -111,7 +111,6 @@
 
     let html = "";
     list.forEach((b, i) => {
-      if (i === 3) html += `<li class="tip"><span class="bulb">💡</span>15 个结售汇技巧，90% 的人都搞错了！</li>`;
       const diffBuy = b.buy != null ? ((b.buy - bestBuy) / 100 * 10000).toFixed(2) : null;
       const diffSell = b.sell != null ? ((bestSell - b.sell) / 100 * 10000).toFixed(2) : null;
       html += `<li class="${state.open.has(b.code) ? "open" : ""}" data-code="${b.code}">
@@ -139,7 +138,6 @@
   $("#rows").addEventListener("click", (e) => {
     const li = e.target.closest("li[data-code]");
     if (li) { const c = li.dataset.code; state.open.has(c) ? state.open.delete(c) : state.open.add(c); li.classList.toggle("open"); }
-    else if (e.target.closest(".tip")) toast("经验文章模块规划中");
   });
 
   // ------------------------------------------------ calculator
