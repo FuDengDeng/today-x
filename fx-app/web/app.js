@@ -1,7 +1,7 @@
 (() => {
   const API = "/api/v1";
   const PRIMARY = ["USD", "JPY", "HKD", "AUD", "EUR", "GBP", "KRW"];
-  const STATUS_TXT = { live: "已接入", conn_reset: "连接被拒", no_endpoint: "无公开接口", unprobed: "未调研" };
+  const STATUS_TXT = { live: "已接入", local_test: "待本地测试", app_only: "仅App/公众号", unknown: "待确认机构" };
   const $ = (s) => document.querySelector(s);
   const state = { currency: "USD", region: "mainland", channel: "spot", sort: { col: "buy", dir: "asc" },
                   data: null, currencies: [], open: new Set(), calcDir: "buy" };

@@ -145,4 +145,66 @@ def fetch_cfets() -> dict:
     return parse_cfets(_get(CFETS_URL))
 
 
-LIVE_ADAPTERS = {"boc": fetch_boc, "cmb": fetch_cmb}
+# --------------------------------------------------- 南洋商业银行（中国）(NCB)
+# Public JSON API called by the official rate page
+# (ncbchina.cn/website/ncb-zh/view/personFinance/person_01_01.html).
+NCB_URL = "https://ibs.ncbchina.cn/NCB/mForeignExchangePriceQuery"
+
+
+def parse_ncb(text: str) -> list[Quote]:
+    data = json.loads(text)
+    if data.get("resCode") != "CIP0000000":
+        raise ValueError(f"ncb resCode={data.get('resCode')}")
+    out = []
+    for x in data.get("mktQtnInfoArrList") or []:
+        base, quote = x["ccyPair"].split("/")
+
+        def conv(v):
+            d = _dec(v)
+            if d is None:
+                return None
+            if quote == "CNY":            # USD/CNY 6.6814 -> per 100; JPY already per 100
+                return d if base == "JPY" else d * 100
+            return (Decimal(100) / d).quantize(Decimal("0.0001"))   # CNY/DKK inverted
+
+        iso = base if quote == "CNY" else quote
+        ex = [conv(x.get("cstExgBuyPrc")), conv(x.get("cstExgSellPrc"))]
+        cash = [conv(x.get("cstCashBuyPrc")), conv(x.get("cstCashSellPrc"))]
+        if None in ex:
+            continue
+        cash = cash if None not in cash else ex
+        dt, tm = x.get("mktQtnDt", ""), x.get("mktQtnTm", "")
+        ts = f"{dt[:4]}-{dt[4:6]}-{dt[6:]} {tm[:2]}:{tm[2:4]}:{tm[4:]}" if len(dt) == 8 and len(tm) == 6 else None
+        # bank sells at the higher CNY-per-foreign price, buys at the lower
+        out.append(Quote("ncb", iso, min(ex), max(ex), min(cash), max(cash), conv(x.get("cstExgMdlPrc")), ts))
+    return out
+
+
+def fetch_ncb() -> list[Quote]:
+    r = httpx.post(NCB_URL, json={"ccyPair": "", "bsnsTp": "1"},
+                   headers={"User-Agent": UA}, timeout=TIMEOUT)
+    r.raise_for_status()
+    return parse_ncb(r.text)
+
+
+# ---------------------------------------------------------------- 华夏银行 (HXB)
+HXB_URL = "https://psbank.hxb.com.cn/gateway/forexquote.jsp"
+
+
+def parse_hxb(html: str) -> list[Quote]:
+    out = []
+    for row in re.findall(r"<TR class=table_list_body[^>]*>(.*?)</TR>", html, re.S | re.I):
+        c = [re.sub(r"<[^>]+>", "", x).strip() for x in re.findall(r"<TD[^>]*>(.*?)</TD>", row, re.S | re.I)]
+        # 货币种类(USDCNY) 序号 现汇买入 现钞买入 现汇现钞卖出 现汇中间价 发布时间 ; per 100 units
+        if len(c) < 7 or not c[0].endswith("CNY"):
+            continue
+        sell = _dec(c[4])
+        out.append(Quote("hxb", c[0][:3], _dec(c[2]), sell, _dec(c[3]), sell, _dec(c[5]), c[6]))
+    return out
+
+
+def fetch_hxb() -> list[Quote]:
+    return parse_hxb(_get(HXB_URL))
+
+
+LIVE_ADAPTERS = {"boc": fetch_boc, "cmb": fetch_cmb, "ncb": fetch_ncb, "hxb": fetch_hxb}
