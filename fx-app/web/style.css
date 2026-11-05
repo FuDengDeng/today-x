@@ -19,7 +19,10 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 .small{font-size:12px}
 
 /* masthead */
-.hero{margin:0 -12px;padding:18px 20px 52px;background:var(--red);color:#fff;position:relative}
+.hero{margin:0 -12px;padding:18px 20px 52px;background:var(--red);color:#fff;position:relative;overflow:hidden}
+.hero > *:not(.globe){position:relative;z-index:1}
+.globe{position:absolute;right:-46px;top:-6px;width:210px;height:210px;opacity:.4;transform:rotate(-14deg);pointer-events:none}
+.globe .orbit{opacity:.9}
 .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--red-dark)}
 .hero-sm{padding:22px 20px 44px}
 .brand{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;letter-spacing:1px}
