@@ -713,13 +713,11 @@ cd fx-app/backend && uvicorn app:app --host 0.0.0.0 --port 8000
 | 我的 | 微信登录占位、29 家数据源接入状态（红/绿）、缓存策略说明 |
 | 自动刷新 | 按后端 `cache_ttl` 轮询 |
 
-原型截图（iPhone 13 尺寸，后端已接实时数据）：
+原型截图（2026-11-05 更新：红色主调 + 线框地球横幅；iPhone 13 尺寸，后端接实时数据）：
 
-<p>
-<img src="../fx-app/docs/screenshots/01-home.png" width="31%" alt="首页">
-<img src="../fx-app/docs/screenshots/03-calculator.png" width="31%" alt="算一算">
-<img src="../fx-app/docs/screenshots/06-mine-sources.png" width="31%" alt="数据源状态">
-</p>
+<table style="border:0;page-break-inside:avoid"><tr><td style="width:33%;text-align:center;border:0;padding:6px"><img src="../fx-app/docs/screenshots/01-home.png" style="width:100%" alt="① 比价首页：美元现汇，购汇升序"><br><span style="font-size:9pt;color:#555">① 比价首页：美元现汇，购汇升序</span></td><td style="width:33%;text-align:center;border:0;padding:6px"><img src="../fx-app/docs/screenshots/02-sort-sell-detail.png" style="width:100%" alt="② 按结汇排序 + 展开银行详情"><br><span style="font-size:9pt;color:#555">② 按结汇排序 + 展开银行详情</span></td><td style="width:33%;text-align:center;border:0;padding:6px"><img src="../fx-app/docs/screenshots/03-calculator.png" style="width:100%" alt="③ 算一算：购汇换算与省钱对比"><br><span style="font-size:9pt;color:#555">③ 算一算：购汇换算与省钱对比</span></td></tr></table>
+
+<table style="border:0;page-break-inside:avoid"><tr><td style="width:33%;text-align:center;border:0;padding:6px"><img src="../fx-app/docs/screenshots/04-more-currency.png" style="width:100%" alt="④ 更多币种弹层"><br><span style="font-size:9pt;color:#555">④ 更多币种弹层</span></td><td style="width:33%;text-align:center;border:0;padding:6px"><img src="../fx-app/docs/screenshots/05-sgd-cash.png" style="width:100%" alt="⑤ 新加坡元 · 现钞"><br><span style="font-size:9pt;color:#555">⑤ 新加坡元 · 现钞</span></td><td style="width:33%;text-align:center;border:0;padding:6px"><img src="../fx-app/docs/screenshots/06-mine-sources.png" style="width:100%" alt="⑥ 我的：29 家数据源接入状态"><br><span style="font-size:9pt;color:#555">⑥ 我的：29 家数据源接入状态</span></td></tr></table>
 
 **示例数据口径**：美元直接使用截图价格；其他币种由「中行实时价 × 该行美元相对中行的价差比例」**合成**，仅供演示界面，不代表真实牌价。
 
